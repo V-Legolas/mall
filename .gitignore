@@ -1,0 +1,54 @@
+**/target/
+
+# IntelliJ project files
+**/out
+html
+.idea
+*.iml
+*.ipr
+*.iws
+
+# Eclipse project files
+**/.classpath
+**/.project
+**/.settings/
+**/bin/
+**.factorypath
+**.apt_generated*
+**.eml
+
+# gradle
+.gradle
+**/build
+
+# MacOS
+.DS_Store
+/repo/
+
+# maven ignore
+target/
+*.jar
+*.war
+*.ear
+*.zip
+*.tar
+*.tar.gz
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+*.java~
+*.properties~
+*.xml~
+
+# system ignore
+.DS_Store
+Thumbs.db
+Servers
+.metadata
+
+# test
+**/test/**
