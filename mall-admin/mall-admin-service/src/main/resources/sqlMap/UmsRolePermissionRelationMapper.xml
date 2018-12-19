@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mardoner.mall.admin.mapper.UmsRolePermissionRelationMapper">
+    <select id="getPermissionsByRoleId" resultMap="com.mardoner.mall.admin.mapper.UmsPermissionMapper.BaseResultMap">
+        SELECT p.id,p.name,p.value
+        FROM
+          ums_role_permission_relation rp
+          LEFT JOIN ums_permission p ON rp.permission_id=p.id
+        WHERE rp.role_id=#{roleId}
+    </select>
+
+    <insert id="insertList">
+        INSERT INTO ums_role_permission_relation(role_id,permission_id)
+        VALUES
+          <foreach collection="list" item="item" separator="," index="index">
+              (#{item.roleId},#{item.permissionId})
+          </foreach>
+    </insert>
+</mapper>
