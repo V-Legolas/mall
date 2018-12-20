@@ -10,12 +10,12 @@
   <modelVersion>4.0.0</modelVersion>
   <packaging>jar</packaging>
   <artifactId>mall-admin-service</artifactId>
-
+  <description>后台管理业务逻辑模块</description>
   <dependencies>
     <dependency>
       <groupId>com.mardoner</groupId>
       <artifactId>mall-admin-facade</artifactId>
-      <version>${morning.version}</version>
+      <version>${mall.version}</version>
     </dependency>
   </dependencies>
 </project>

@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
@@ -22,14 +23,14 @@ public class UmsAdminRegisterParam implements Serializable {
     private String username;
 
     @ApiModelProperty(value = "密码", required = true)
-    @NotEmpty(message = "密码不能为空")
+    @Pattern(regexp = "((?=.*\\d)(?=.*\\D)|(?=.*[a-zA-Z])(?=.*[^a-zA-Z]))^.{6,20}$",message = "密码格式不正确")
     private String password;
 
     @ApiModelProperty(value = "用户头像")
     private String icon;
 
     @ApiModelProperty(value = "邮箱")
-    @Email(message = "邮箱格式不正确")
+    @Email(regexp = "^([\\w-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([\\w-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$",message = "邮箱格式不正确")
     private String email;
 
     @ApiModelProperty(value = "用户昵称")

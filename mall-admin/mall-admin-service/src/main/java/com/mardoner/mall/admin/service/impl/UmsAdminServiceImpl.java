@@ -14,6 +14,14 @@ import com.mardoner.mall.admin.pojo.dto.UmsAdminRegisterParam;
 import com.mardoner.mall.admin.service.UmsAdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -21,6 +29,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
+import javax.security.auth.login.AccountException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -40,15 +49,10 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin>
     private UmsAdminPermissionRelationMapper adminPermissionRelationMapper;
     @Resource(name = "umsAdminRoleRelationMapper")
     private UmsAdminRoleRelationMapper adminRoleRelationMapper;
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-//    @Autowired
-//    private AuthenticationManager authManager;
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder(){
-//        return new BCryptPasswordEncoder();
-//    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthenticationProvider authManager;
 
     @Override
     public UmsAdmin getAdminByUsername(String username) {
@@ -60,21 +64,16 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin>
     }
 
     @Override
-    public boolean login(String username, String password) {
+    public boolean login(String username, String password) throws AuthenticationException {
         // 密码需要客户端加密再传递到数据库验证
-//        UsernamePasswordAuthenticationToken authenticationToken =
-//                new UsernamePasswordAuthenticationToken(username,passwordEncoder.encode(password));
-//        try{
-//            Authentication authentication = authManager.authenticate(authenticationToken);
-//            // 将验证信息保存至上下文
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//            // 更新登录相关信息
-//            updateLoginTimeByUserName(username);
-//            insertLoginLog(username);
-//        }catch (AuthenticationException e){
-//            LOGGER.warn("登录异常：{}",e.getMessage());
-//            return false;
-//        }
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(username,password);
+        Authentication authentication = authManager.authenticate(authenticationToken);
+        // 将验证信息保存至上下文
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // 更新登录相关信息
+        updateLoginTimeByUserName(username);
+        insertLoginLog(username);
         return true;
     }
 
@@ -105,26 +104,25 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin>
     }
 
     @Override
-    public UmsAdmin register(UmsAdminRegisterParam param) {
-//        UmsAdmin umsAdmin = new UmsAdmin();
-//        BeanUtils.copyProperties(param,umsAdmin);
-//        umsAdmin.setCreateTime(new Date());
-//        umsAdmin.setStatus(StatusEnum.NORMAL.getCode());
-//
-//        // 查询是否含有相同用户名
-//        UmsAdmin query = this.getAdminByUsername(umsAdmin.getUsername());
-//        if(query != null){
-//            // 数据库已存在该用户
-//            return null;
-//        }
-//
-//        // 将密码进行加密
-//        String cryptPassword = passwordEncoder.encode(umsAdmin.getPassword());
-//        umsAdmin.setPassword(cryptPassword);
-//        // 保存到数据库
-//        adminMapper.insert(umsAdmin);
-//        return umsAdmin;
-        return null;
+    public boolean register(UmsAdminRegisterParam param)throws AccountException{
+        // 查询是否含有相同用户名
+        UmsAdmin query = this.getAdminByUsername(param.getUsername());
+        if(query != null){
+            // 数据库已存在该用户
+            throw new AccountException("用户已经存在");
+        }
+
+        UmsAdmin umsAdmin = new UmsAdmin();
+        BeanUtils.copyProperties(param,umsAdmin);
+        umsAdmin.setCreateTime(new Date());
+        umsAdmin.setStatus(StatusEnum.NORMAL.getCode());
+
+        // 将密码进行加密
+        String cryptPassword = passwordEncoder.encode(umsAdmin.getPassword());
+        umsAdmin.setPassword(cryptPassword);
+        // 保存到数据库
+        int result = adminMapper.insert(umsAdmin);
+        return result != 0;
     }
 
     @Override

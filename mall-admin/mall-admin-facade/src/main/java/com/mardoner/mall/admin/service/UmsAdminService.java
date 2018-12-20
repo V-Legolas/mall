@@ -5,8 +5,10 @@ import com.mardoner.mall.admin.entity.UmsAdmin;
 import com.mardoner.mall.admin.entity.UmsPermission;
 import com.mardoner.mall.admin.entity.UmsRole;
 import com.mardoner.mall.admin.pojo.dto.UmsAdminRegisterParam;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.security.auth.login.AccountException;
 import java.util.List;
 
 /**
@@ -29,9 +31,9 @@ public interface UmsAdminService extends IService<UmsAdmin> {
     /**
      * 用户注册
      * @param param 注册信息
-     * @return 注册好的账号
+     * @return 注册是否成功
      */
-    UmsAdmin register(UmsAdminRegisterParam param);
+    boolean register(UmsAdminRegisterParam param)throws AccountException;
 
     /**
      * 登录用户
@@ -39,7 +41,7 @@ public interface UmsAdminService extends IService<UmsAdmin> {
      * @param password 密码
      * @return 是否成功
      */
-    boolean login(String username, String password);
+    boolean login(String username, String password)throws AuthenticationException;
 
     /**
      * 分页查询所有管理员
