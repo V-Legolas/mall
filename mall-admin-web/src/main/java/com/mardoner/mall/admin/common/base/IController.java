@@ -1,5 +1,7 @@
 package com.mardoner.mall.admin.common.base;
 
+import com.mardoner.mall.admin.common.enums.AdminResult;
+import com.mardoner.mall.admin.common.enums.CommonReturnCode;
 import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.web.bind.WebDataBinder;
 
@@ -34,4 +36,15 @@ public interface IController {
         });
     }
 
+    /**
+     * 根据操作成功与否返回json数据
+     * @param isOk 操作成功
+     * @return json通用返回结果
+     */
+    default AdminResult getAdminResult(boolean isOk) {
+        if (isOk) {
+            return new AdminResult(CommonReturnCode.SUCCESS);
+        }
+        return new AdminResult(CommonReturnCode.FAILED);
+    }
 }

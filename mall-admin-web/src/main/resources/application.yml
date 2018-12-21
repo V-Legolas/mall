@@ -1,9 +1,22 @@
 spring:
     datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        platform: mysql
         url: jdbc:mysql://localhost:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
         username: mardoner
         password: bhq70719179
-        driver-class-name: com.mysql.jdbc.Driver
+        driverClassName: com.mysql.jdbc.Driver
+        initialSize: 1
+        minIdle: 3
+        maxActive: 20
+        maxWait: 60000
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 'X' FROM DUAL
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        filters: stat
 logging:
     level:
         com.mardoner.mall.admin.mapper: DEBUG

@@ -11,4 +11,11 @@
   <artifactId>mall-admin-facade</artifactId>
   <packaging>jar</packaging>
   <description>商城后台管理基础模块</description>
+    <dependencies>
+        <dependency>
+            <groupId>com.mardoner</groupId>
+            <artifactId>mall-admin-service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

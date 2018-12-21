@@ -4,13 +4,13 @@ import com.mardoner.mall.admin.common.base.IController;
 import com.mardoner.mall.admin.common.enums.AdminResult;
 import com.mardoner.mall.admin.common.enums.CommonReturnCode;
 import com.mardoner.mall.admin.common.enums.UserReturnCode;
-import com.mardoner.mall.admin.entity.UmsAdmin;
-import com.mardoner.mall.admin.entity.UmsPermission;
-import com.mardoner.mall.admin.entity.UmsRole;
+import com.mardoner.mall.admin.entity.ums.UmsAdmin;
+import com.mardoner.mall.admin.entity.ums.UmsPermission;
+import com.mardoner.mall.admin.entity.ums.UmsRole;
 import com.mardoner.mall.admin.pojo.dto.UmsAdminLoginParam;
 import com.mardoner.mall.admin.pojo.dto.UmsAdminRegisterParam;
-import com.mardoner.mall.admin.service.UmsAdminService;
-import com.mardoner.mall.admin.service.UmsPermissionService;
+import com.mardoner.mall.admin.service.ums.UmsAdminService;
+import com.mardoner.mall.admin.service.ums.UmsPermissionService;
 import com.mardoner.mall.admin.util.SingletonLoginUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -72,7 +72,7 @@ public class UmsAdminController implements IController {
 
         if(!registerResult){
             // 注册失败，其它错误
-            return new AdminResult(CommonReturnCode.FAILED);
+            return new AdminResult(CommonReturnCode.UNKOWN);
         }
         return new AdminResult(CommonReturnCode.SUCCESS);
     }
@@ -154,31 +154,22 @@ public class UmsAdminController implements IController {
     public AdminResult update(@PathVariable Long id, @RequestBody UmsAdmin umsAdmin){
         umsAdmin.setId(id);
         boolean isSuccess = adminService.updateById(umsAdmin);
-        if(isSuccess){
-            return new AdminResult(CommonReturnCode.SUCCESS);
-        }
-        return new AdminResult(CommonReturnCode.FAILED);
+        return getAdminResult(isSuccess);
     }
 
     @ApiOperation("删除指定用户")
     @DeleteMapping("/delete/{id}")
     public AdminResult delete(@PathVariable Long id){
         boolean isOk = adminService.removeById(id);
-        if(isOk){
-            return new AdminResult(CommonReturnCode.SUCCESS);
-        }
-        return new AdminResult(CommonReturnCode.FAILED);
+        return getAdminResult(isOk);
     }
 
     @ApiOperation("给客户分配角色")
     @PutMapping("/role/update")
     public AdminResult updateRole(@RequestParam("adminId") Long adminId,
                            @RequestParam("roleIds") List<Long> ids){
-        Integer count = adminService.updateRole(adminId,ids);
-        if(count >= 0){
-            return new AdminResult(CommonReturnCode.SUCCESS,count);
-        }
-        return new AdminResult(CommonReturnCode.FAILED);
+        int count = adminService.updateRole(adminId,ids);
+        return getAdminResult(count >= 0);
     }
 
     @ApiOperation("获取指定用户权限")
@@ -192,11 +183,8 @@ public class UmsAdminController implements IController {
     @PutMapping("/permission/update")
     public AdminResult updatePermissions(@RequestParam("adminId")Long adminId,
                                          @RequestParam("permissionIds")List<Long> permissionIds){
-        Integer count = adminService.updatePermission(adminId,permissionIds);
-        if(count >= 0){
-            return new AdminResult(CommonReturnCode.SUCCESS,count);
-        }
-        return new AdminResult(CommonReturnCode.FAILED);
+        int count = adminService.updatePermission(adminId,permissionIds);
+        return getAdminResult(count >= 0);
     }
 
     @ApiOperation("获取用户所有权限")

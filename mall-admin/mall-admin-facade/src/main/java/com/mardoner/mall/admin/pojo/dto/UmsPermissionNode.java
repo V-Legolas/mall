@@ -1,6 +1,6 @@
 package com.mardoner.mall.admin.pojo.dto;
 
-import com.mardoner.mall.admin.entity.UmsPermission;
+import com.mardoner.mall.admin.entity.ums.UmsPermission;
 
 import java.util.List;
 

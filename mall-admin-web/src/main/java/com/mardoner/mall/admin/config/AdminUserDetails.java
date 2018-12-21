@@ -1,7 +1,7 @@
 package com.mardoner.mall.admin.config;
 
-import com.mardoner.mall.admin.entity.UmsAdmin;
-import com.mardoner.mall.admin.entity.UmsPermission;
+import com.mardoner.mall.admin.entity.ums.UmsAdmin;
+import com.mardoner.mall.admin.entity.ums.UmsPermission;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,8 +1,8 @@
 package com.mardoner.mall.admin.config;
 
-import com.mardoner.mall.admin.entity.UmsAdmin;
-import com.mardoner.mall.admin.entity.UmsPermission;
-import com.mardoner.mall.admin.service.UmsAdminService;
+import com.mardoner.mall.admin.entity.ums.UmsAdmin;
+import com.mardoner.mall.admin.entity.ums.UmsPermission;
+import com.mardoner.mall.admin.service.ums.UmsAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

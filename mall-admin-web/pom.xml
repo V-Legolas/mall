@@ -29,5 +29,11 @@
             <artifactId>commons-text</artifactId>
             <version>1.5</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+
     </dependencies>
 </project>
