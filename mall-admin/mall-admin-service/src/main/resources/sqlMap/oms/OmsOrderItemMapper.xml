@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mardoner.mall.admin.mapper.oms.OmsOrderItemMapper">
+    <resultMap id="BaseMap" type="com.mardoner.mall.admin.entity.oms.OmsOrderItem">
+        <id property="id" column="id"></id>
+        <result property="orderId" column="order_id"></result>
+        <result property="orderSn" column="order_sn"></result>
+        <result property="productId" column="product_id"></result>
+        <result property="productPic" column="product_pic"></result>
+        <result property="productName" column="product_name"></result>
+        <result property="productBrand" column="product_brand"></result>
+        <result property="productPrice" column="product_price"></result>
+        <result property="productQuantity" column="product_quantity"></result>
+        <result property="productSkuId" column="product_sku_id"></result>
+        <result property="productSkuCode" column="product_sku_code"></result>
+        <result property="productCategoryId" column="product_category_id"></result>
+        <result property="sp1" column="sp1"></result>
+        <result property="sp2" column="sp2"></result>
+        <result property="sp3" column="sp3"></result>
+        <result property="promotionName" column="promotion_name"></result>
+        <result property="promotionAmount" column="promotion_amount"></result>
+        <result property="couponAmount" column="coupon_amount"></result>
+        <result property="integrationAmount" column="integration_amount"></result>
+        <result property="realAmount" column="real_amount"></result>
+        <result property="giftIntegration" column="gift_integration"></result>
+        <result property="giftGrowth" column="gift_growth"></result>
+        <result property="productAttr" column="product_attr"></result>
+    </resultMap>
+
+</mapper>

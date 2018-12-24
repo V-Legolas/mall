@@ -5,7 +5,7 @@ import com.mardoner.mall.admin.common.base.IController;
 import com.mardoner.mall.admin.common.enums.AdminResult;
 import com.mardoner.mall.admin.common.enums.CommonReturnCode;
 import com.mardoner.mall.admin.entity.ums.UmsPermission;
-import com.mardoner.mall.admin.pojo.dto.UmsPermissionNode;
+import com.mardoner.mall.admin.pojo.dto.vo.UmsPermissionNode;
 import com.mardoner.mall.admin.service.ums.UmsPermissionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

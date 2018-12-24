@@ -24,5 +24,7 @@ server:
     port: 8081
 mybatis-plus:
     mapper-locations:
-        - classpath*:/sqlMap/*.xml
+        - classpath:/sqlMap/oms/*.xml
+        - classpath:/sqlMap/ums/*.xml
+        - classpath:/sqlMap/pms/*.xml
 

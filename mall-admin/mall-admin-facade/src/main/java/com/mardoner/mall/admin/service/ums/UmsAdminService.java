@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.mardoner.mall.admin.entity.ums.UmsAdmin;
 import com.mardoner.mall.admin.entity.ums.UmsPermission;
 import com.mardoner.mall.admin.entity.ums.UmsRole;
-import com.mardoner.mall.admin.pojo.dto.UmsAdminRegisterParam;
+import com.mardoner.mall.admin.pojo.dto.param.UmsAdminRegisterParam;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.annotation.Transactional;
 

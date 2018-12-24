@@ -2,8 +2,8 @@ package com.mardoner.mall.admin.service.oms;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mardoner.mall.admin.entity.oms.OmsOrderReturnApply;
-import com.mardoner.mall.admin.pojo.dto.OmsOrderReturnApplyResult;
-import com.mardoner.mall.admin.pojo.dto.OmsOrderReturnStatusParam;
+import com.mardoner.mall.admin.pojo.dto.vo.OmsOrderReturnApplyResult;
+import com.mardoner.mall.admin.pojo.dto.param.OmsOrderReturnStatusParam;
 
 /**
 * @Description:  退货申请业务逻辑接口

@@ -2,7 +2,11 @@ package com.mardoner.mall.admin.service.oms;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mardoner.mall.admin.entity.oms.OmsOrder;
-import com.mardoner.mall.admin.pojo.dto.*;
+import com.mardoner.mall.admin.pojo.dto.param.OmsMoneyParam;
+import com.mardoner.mall.admin.pojo.dto.vo.OmsOrderDetail;
+import com.mardoner.mall.admin.pojo.dto.param.OmsOrderDeliveryParam;
+import com.mardoner.mall.admin.pojo.dto.param.OmsOrderQueryParam;
+import com.mardoner.mall.admin.pojo.dto.param.OmsReceiveInfoParam;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -31,16 +35,17 @@ public interface OmsOrderService extends IService<OmsOrder> {
      * @return 成功记录数
      */
     @Transactional
-    int delivery(List<OmsOrderDeliveryParam> deliveryParamList);
+    int delivery(List<OmsOrderDeliveryParam> deliveryParamList, String operateName);
 
     /**
      * 批量关闭订单
      * @param orderIds 订单id集合
      * @param note 备注
+     * @param operatorName 操作人
      * @return 成功记录数
      */
     @Transactional
-    int close(List<Long> orderIds, String note);
+    int close(List<Long> orderIds, String note, String operatorName);
 
     /**
      * 获取指定订单详情
@@ -52,26 +57,29 @@ public interface OmsOrderService extends IService<OmsOrder> {
     /**
      * 更改订单收货信息
      * @param omsReceiveInfoParam 订单新的收货信息
+     * @param operatorName 操作人
      * @return 成功修改记录数
      */
     @Transactional
-    int updateReceiveInfo(OmsReceiveInfoParam omsReceiveInfoParam);
+    int updateReceiveInfo(OmsReceiveInfoParam omsReceiveInfoParam, String operatorName);
 
     /**
      * 修改订单费用信息
      * @param money 订单费用
+     * @param operatorName 操作人
      * @return 成功记录数
      */
     @Transactional
-    int updateMoneyInfo(OmsMoneyInfo money);
+    int updateMoneyInfo(OmsMoneyParam money, String operatorName);
 
     /**
      * 修改订单备注
      * @param id 订单id
      * @param note 新的订单备注
      * @param status 订单状态
+     * @param operatorName 操作人
      * @return 成功记录数
      */
     @Transactional
-    int updateNote(Long id, String note, Integer status);
+    int updateNote(Long id, String note, Integer status, String operatorName);
 }

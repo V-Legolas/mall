@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mardoner.mall.admin.mapper.pms.ProductCategoryMapper">
+
+    <resultMap id="BaseMap" type="com.mardoner.mall.admin.entity.pms.ProductCategory">
+        <id property="id" column="id"></id>
+        <result property="parentId" column="parent_id"></result>
+        <result property="name" column="name"></result>
+        <result property="level" column="level"></result>
+        <result property="productCount" column="product_count"></result>
+        <result property="productUnit" column="product_unit"></result>
+        <result property="navStatus" column="nav_status"></result>
+        <result property="showStatus" column="show_status"></result>
+        <result property="sort" column="sort"></result>
+        <result property="icon" column="icon"></result>
+        <result property="keywords" column="keywords"></result>
+        <result property="description" column="description"></result>
+    </resultMap>
+
+    <resultMap id="WithChildrenMap" type="com.mardoner.mall.admin.pojo.dto.vo.PmsProductCategoryWithChildren" extends="BaseMap">
+        <collection property="children" resultMap="BaseMap" columnPrefix="child_"></collection>
+    </resultMap>
+
+    <select id="listWithChildren" resultMap="WithChildrenMap">
+        SELECT
+            c1.id,
+            c1.name,
+            c2.id child_id,
+            c2.name child_name
+        FROM
+            pms_product_category c1 LEFT JOIN pms_product_category c2 ON c1.id=c2.parent_id
+        WHERE
+            c1.parent_id=0
+    </select>
+
+</mapper>

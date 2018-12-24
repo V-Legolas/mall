@@ -1,9 +1,6 @@
 package com.mardoner.mall.admin.entity.oms;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
@@ -37,7 +34,7 @@ public class OmsOrder extends Model<OmsOrder> {
     private String orderSn;
 
     @TableField("create_time")
-    private Date craeteTime;
+    private Date createTime;
 
     /** 客户名称 */
     @TableField("member_username")
@@ -138,7 +135,7 @@ public class OmsOrder extends Model<OmsOrder> {
     private String receiverPhone;
 
     /** 接收地址邮政编码 */
-    @TableField("receiver_post_coe")
+    @TableField("receiver_post_code")
     private String receiverPostCode;
 
     /** 接收地址信息 */
@@ -160,8 +157,9 @@ public class OmsOrder extends Model<OmsOrder> {
     @TableField("confirm_status")
     private Integer confirmStatus;
 
-    /** 删除状态 */
+    /** 删除状态 , 逻辑删除 */
     @TableField("delete_status")
+    @TableLogic
     private Integer deleteStatus;
 
     /** 下单使用积分 */
@@ -220,12 +218,12 @@ public class OmsOrder extends Model<OmsOrder> {
         this.orderSn = orderSn;
     }
 
-    public Date getCraeteTime() {
-        return craeteTime;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCraeteTime(Date craeteTime) {
-        this.craeteTime = craeteTime;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getMemberUsername() {

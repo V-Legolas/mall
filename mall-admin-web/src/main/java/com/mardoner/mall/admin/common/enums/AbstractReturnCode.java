@@ -1,5 +1,7 @@
 package com.mardoner.mall.admin.common.enums;
 
+import com.mardoner.mall.admin.enums.ReturnCode;
+
 /**
 * @Description:  通用返回基类
 * @ClassName: AbstractReturnCode
@@ -8,7 +10,7 @@ package com.mardoner.mall.admin.common.enums;
 * @date 2018/12/20 9:29
 * @Version 1.0
 */
-public abstract class AbstractReturnCode implements ReturnCode{
+public abstract class AbstractReturnCode implements ReturnCode {
 
     private Integer code;
     private String message;

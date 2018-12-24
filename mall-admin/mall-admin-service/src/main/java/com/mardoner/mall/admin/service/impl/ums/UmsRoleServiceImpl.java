@@ -27,8 +27,6 @@ import java.util.List;
 public class UmsRoleServiceImpl extends ServiceImpl<UmsRoleMapper, UmsRole>
     implements UmsRoleService {
 
-    @Resource(name = "umsRoleMapper")
-    private UmsRoleMapper umsRoleMapper;
     @Resource(name = "umsRolePermissionRelationMapper")
     private UmsRolePermissionRelationMapper rolePermissionRelationMapper;
 

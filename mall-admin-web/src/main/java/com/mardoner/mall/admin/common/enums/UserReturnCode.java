@@ -1,6 +1,8 @@
 package com.mardoner.mall.admin.common.enums;
 
-public enum UserReturnCode implements ReturnCode{
+import com.mardoner.mall.admin.enums.ReturnCode;
+
+public enum UserReturnCode implements ReturnCode {
     USER_NOT_EXIST(10000,"该账号不存在！"),
     USER_SUSPEND(10001,"该账号已被冻结！"),
     WRONG_PASSWORD(10003,"您输入的密码不正确！"),

@@ -10,7 +10,7 @@ import com.mardoner.mall.admin.mapper.ums.UmsAdminLoginLogMapper;
 import com.mardoner.mall.admin.mapper.ums.UmsAdminMapper;
 import com.mardoner.mall.admin.mapper.ums.UmsAdminPermissionRelationMapper;
 import com.mardoner.mall.admin.mapper.ums.UmsAdminRoleRelationMapper;
-import com.mardoner.mall.admin.pojo.dto.UmsAdminRegisterParam;
+import com.mardoner.mall.admin.pojo.dto.param.UmsAdminRegisterParam;
 import com.mardoner.mall.admin.service.ums.UmsAdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mardoner.mall.admin.entity.ums.UmsPermission;
 import com.mardoner.mall.admin.mapper.ums.UmsPermissionMapper;
-import com.mardoner.mall.admin.pojo.dto.UmsPermissionNode;
+import com.mardoner.mall.admin.pojo.dto.vo.UmsPermissionNode;
 import com.mardoner.mall.admin.service.ums.UmsPermissionService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

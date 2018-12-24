@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mardoner.mall.admin.mapper.pms.ProductAttributeMapper">
+    <resultMap id="BaseMap" type="com.mardoner.mall.admin.entity.pms.ProductAttribute">
+        <id property="id" column="id"></id>
+        <result property="productAttributeCategoryId" column="product_attribute_category_id"></result>
+        <result property="name" column="name"></result>
+        <result property="selectType" column="select_type"></result>
+        <result property="inputType" column="input_type"></result>
+        <result property="inputList" column="input_list"></result>
+        <result property="sort" column="sort"></result>
+        <result property="filterType" column="filter_type"></result>
+        <result property="searchType" column="search_type"></result>
+        <result property="relatedStatus" column="related_status"></result>
+        <result property="handAddStatus" column="hand_add_status"></result>
+        <result property="type" column="type"></result>
+    </resultMap>
+
+    <select id="getAttrInfo" resultType="com.mardoner.mall.admin.pojo.dto.vo.PmsProductAttrInfo">
+        SELECT
+            pa.id  attributeId,
+            pac.id attributeCategoryId,
+            pcar.product_category_id productCategoryId
+        FROM
+            pms_product_category_attribute_relation pcar
+            LEFT JOIN pms_product_attribute pa ON pa.id = pcar.product_attribute_id
+            LEFT JOIN pms_product_attribute_category pac ON pa.product_attribute_category_id = pac.id
+    </select>
+</mapper>

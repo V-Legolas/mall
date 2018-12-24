@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mardoner.mall.admin.mapper.pms.ProductAttributeCategoryMapper">
+
+    <resultMap id="BaseMap" type="com.mardoner.mall.admin.entity.pms.ProductAttributeCategory">
+        <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="attributeCount" column="attribute_count"></result>
+        <result property="paramCount" column="param_count"></result>
+    </resultMap>
+
+    <resultMap id="attrResultMap" type="com.mardoner.mall.admin.pojo.dto.vo.PmsProductAttributeCategoryItem"
+               extends="BaseMap">
+        <collection property="attributeList" columnPrefix="attr_" resultMap="com.mardoner.mall.admin.mapper.pms.ProductAttributeMapper.BaseMap"></collection>
+    </resultMap>
+
+    <select id="listWithAttr" resultMap="attrResultMap">
+        SELECT
+            pac.*,
+            pa.id attr_id,
+            pa.name attr_name
+        FROM
+            pms_product_attribute_category pac
+            LEFT JOIN pms_product_attribute pa ON pac.id=pa.product_attribute_category_id
+    </select>
+</mapper>

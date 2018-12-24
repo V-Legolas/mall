@@ -2,7 +2,7 @@ package com.mardoner.mall.admin.service.ums;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mardoner.mall.admin.entity.ums.UmsPermission;
-import com.mardoner.mall.admin.pojo.dto.UmsPermissionNode;
+import com.mardoner.mall.admin.pojo.dto.vo.UmsPermissionNode;
 
 import java.util.List;
 

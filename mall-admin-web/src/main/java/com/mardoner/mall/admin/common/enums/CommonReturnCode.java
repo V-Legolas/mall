@@ -1,6 +1,8 @@
 package com.mardoner.mall.admin.common.enums;
 
-public enum CommonReturnCode implements ReturnCode{
+import com.mardoner.mall.admin.enums.ReturnCode;
+
+public enum CommonReturnCode implements ReturnCode {
     SUCCESS(1,"操作成功"),
     FAILED(0,"操作失败"),
     UNKOWN(-1,"未知错误"),

@@ -26,6 +26,9 @@ public class OmsOrderItem extends Model<OmsOrderItem> {
     @TableField("order_id")
     private Long orderId;
 
+    @TableField("order_sn")
+    private Long orderSn;
+
     @TableField("product_id")
     private Long productId;
 
@@ -80,8 +83,8 @@ public class OmsOrderItem extends Model<OmsOrderItem> {
     private BigDecimal couponAmount;
 
     /** 积分分解金额 */
-    @TableField("integrationAmount")
-    private BigDecimal integrationAount;
+    @TableField("integration_amount")
+    private BigDecimal integrationAmount;
 
     /** 商品经过所有优惠的实际金额 */
     @TableField("real_amount")
@@ -91,7 +94,7 @@ public class OmsOrderItem extends Model<OmsOrderItem> {
     private Integer giftIntegration;
 
     @TableField("gift_growth")
-    private Integer gifrGrowth;
+    private Integer giftGrowth;
 
     @TableField("product_attr")
     private String productAttr;
@@ -240,12 +243,12 @@ public class OmsOrderItem extends Model<OmsOrderItem> {
         this.couponAmount = couponAmount;
     }
 
-    public BigDecimal getIntegrationAount() {
-        return integrationAount;
+    public BigDecimal getIntegrationAmount() {
+        return integrationAmount;
     }
 
-    public void setIntegrationAount(BigDecimal integrationAount) {
-        this.integrationAount = integrationAount;
+    public void setIntegrationAmount(BigDecimal integrationAmount) {
+        this.integrationAmount = integrationAmount;
     }
 
     public BigDecimal getRealAmount() {
@@ -264,12 +267,12 @@ public class OmsOrderItem extends Model<OmsOrderItem> {
         this.giftIntegration = giftIntegration;
     }
 
-    public Integer getGifrGrowth() {
-        return gifrGrowth;
+    public Integer getGiftGrowth() {
+        return giftGrowth;
     }
 
-    public void setGifrGrowth(Integer gifrGrowth) {
-        this.gifrGrowth = gifrGrowth;
+    public void setGiftGrowth(Integer giftGrowth) {
+        this.giftGrowth = giftGrowth;
     }
 
     public String getProductAttr() {
@@ -278,6 +281,14 @@ public class OmsOrderItem extends Model<OmsOrderItem> {
 
     public void setProductAttr(String productAttr) {
         this.productAttr = productAttr;
+    }
+
+    public Long getOrderSn() {
+        return orderSn;
+    }
+
+    public void setOrderSn(Long orderSn) {
+        this.orderSn = orderSn;
     }
 
     @Override

@@ -17,7 +17,8 @@ public enum StatusEnum {
     NON_NORMAL(0,"无效"),
 
     COMMON_MEMBER(1,"默认会员"),
-    LEVEL_MEMBER(0,"非默认会员");
+    LEVEL_MEMBER(0,"非默认会员"),
+    ;
 
 
     private Integer code;
