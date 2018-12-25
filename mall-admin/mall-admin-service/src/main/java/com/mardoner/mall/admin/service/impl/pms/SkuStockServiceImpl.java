@@ -1,15 +1,14 @@
 package com.mardoner.mall.admin.service.impl.pms;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mardoner.mall.admin.entity.pms.SkuStock;
 import com.mardoner.mall.admin.mapper.pms.SkuStockMapper;
 import com.mardoner.mall.admin.service.pms.SkuStockService;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 
@@ -29,7 +28,9 @@ public class SkuStockServiceImpl implements SkuStockService{
 	@Override
 	public List<SkuStock> list(String keywords) {
 		QueryWrapper<SkuStock> wrapper = new QueryWrapper<>();
-		wrapper.like("sku_code", keywords);
+		if(!StringUtils.isEmpty(keywords)){
+			wrapper.like("sku_code", keywords);
+		}
 		return stockMapper.selectList(wrapper);
 	}
 

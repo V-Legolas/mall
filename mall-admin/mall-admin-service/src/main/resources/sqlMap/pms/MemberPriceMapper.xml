@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mardoner.mall.admin.mapper.pms.MemberPriceMapper">
+    <resultMap id="BaseMap" type="com.mardoner.mall.admin.entity.pms.MemberPrice">
+        <id property="id" column="id"></id>
+        <result property="productId" column="product_id"></result>
+        <result property="memberLevelName" column="member_level_name"></result>
+        <result property="memberLevelId" column="member_level_id"></result>
+        <result property="memberPrice" column="member_price"></result>
+    </resultMap>
+
     <insert id="insertList">
         INSERT INTO pms_member_price(product_id,member_level_id,member_price,member_level_name)
         VALUES

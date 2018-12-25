@@ -3,7 +3,6 @@ package com.mardoner.mall.admin.pojo.dto.param;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
 * @Description:  订单查询条件 DTO
@@ -32,7 +31,7 @@ public class OmsOrderQueryParam implements Serializable {
     private Integer sourceType;
 
     @ApiModelProperty("订单提交时间")
-    private Date createTime;
+    private String createTime;
 
     public String getOrderSn() {
         return orderSn;
@@ -74,11 +73,11 @@ public class OmsOrderQueryParam implements Serializable {
         this.sourceType = sourceType;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

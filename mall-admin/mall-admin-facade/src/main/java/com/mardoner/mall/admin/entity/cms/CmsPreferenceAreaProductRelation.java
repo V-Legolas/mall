@@ -23,12 +23,12 @@ public class CmsPreferenceAreaProductRelation
 
 	@TableId(value = "id",type = IdType.AUTO)
 	private Long id;
-	
-	@TableField("preference_area_id")
-	private Long preferenceAreaId;
-	
+
 	@TableField("product_id")
 	private Long productId;
+
+	@TableField("preference_area_id")
+	private Long preferenceAreaId;
 
 	public Long getId() {
 		return id;
@@ -38,14 +38,6 @@ public class CmsPreferenceAreaProductRelation
 		this.id = id;
 	}
 
-	public Long getpreferenceAreaId() {
-		return preferenceAreaId;
-	}
-
-	public void setpreferenceAreaId(Long preferenceAreaId) {
-		this.preferenceAreaId = preferenceAreaId;
-	}
-
 	public Long getProductId() {
 		return productId;
 	}
@@ -53,7 +45,15 @@ public class CmsPreferenceAreaProductRelation
 	public void setProductId(Long productId) {
 		this.productId = productId;
 	}
-	
+
+	public Long getPreferenceAreaId() {
+		return preferenceAreaId;
+	}
+
+	public void setPreferenceAreaId(Long preferenceAreaId) {
+		this.preferenceAreaId = preferenceAreaId;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;

@@ -34,10 +34,11 @@ public class ProductAttributeServiceImpl implements ProductAttributeService {
 
     @Override
     public IPage<ProductAttribute> listPage(Long cid, Integer type, Integer current, Integer limit) {
+        ProductAttribute attribute = new ProductAttribute();
+        attribute.setProductAttributeCategoryId(cid);
+        attribute.setType(type);
         QueryWrapper<ProductAttribute> wrapper =
-                new QueryWrapper<>();
-        wrapper.eq("type",type);
-        wrapper.eq("product_attribute_category_id",cid);
+                new QueryWrapper<>(attribute);
         wrapper.orderByDesc("sort");
         IPage<ProductAttribute> page = new Page<>(current,limit);
         return attributeMapper.selectPage(page,wrapper);

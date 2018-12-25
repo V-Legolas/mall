@@ -83,11 +83,11 @@ public class BrandServiceImpl implements BrandService {
 
 	@Override
 	public IPage<Brand> listPage(String keyword, int current, int size) {
-		IPage<Brand> page = new Page<>();
-		page.setCurrent(current);
-		page.setSize(size);
+		IPage<Brand> page = new Page<>(current,size);
 		QueryWrapper<Brand> wrapper = new QueryWrapper<>();
-		wrapper.like("name", keyword);
+		if(!StringUtils.isEmpty(keyword)){
+			wrapper.like("name", keyword);
+		}
 		wrapper.orderByDesc("sort");
 		return brandMapper.selectPage(page, wrapper);
 	}

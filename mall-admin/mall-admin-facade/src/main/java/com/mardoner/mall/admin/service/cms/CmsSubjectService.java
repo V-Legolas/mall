@@ -13,4 +13,5 @@ import com.mardoner.mall.admin.entity.cms.CmsSubject;
 */
 public interface CmsSubjectService extends IService<CmsSubject> {
 
+
 }

@@ -47,4 +47,13 @@ public interface IController {
         }
         return new AdminResult(CommonReturnCode.FAILED);
     }
+
+    default AdminResult getAdminResult(Integer count) {
+        if (count > 0) {
+            // 操作成功
+            return new AdminResult(CommonReturnCode.SUCCESS,count);
+        }
+        // 操作失败
+        return new AdminResult(CommonReturnCode.FAILED);
+    }
 }

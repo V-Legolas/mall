@@ -1,5 +1,6 @@
 package com.mardoner.mall.admin.service.ums;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mardoner.mall.admin.entity.ums.UmsAdmin;
 import com.mardoner.mall.admin.entity.ums.UmsPermission;
@@ -50,7 +51,7 @@ public interface UmsAdminService extends IService<UmsAdmin> {
      * @param limit  每页显示记录条数
      * @return 符合条件所有管理员
      */
-    List<UmsAdmin> listByPage(String name,Integer index,Integer limit);
+    IPage<UmsAdmin> listByPage(String name, Integer index, Integer limit);
 
     /**
      * 修改用户角色关系

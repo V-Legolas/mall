@@ -18,6 +18,10 @@ public enum StatusEnum {
 
     COMMON_MEMBER(1,"默认会员"),
     LEVEL_MEMBER(0,"非默认会员"),
+
+    // 逻辑删除
+    LOGIC_DELETE(1,"已经被逻辑删除"),
+    NOT_LOGIC_DELETE(0,"未被逻辑删除")
     ;
 
 

@@ -3,6 +3,7 @@ package com.mardoner.mall.admin.pojo.dto.param;
 import com.mardoner.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -23,6 +24,7 @@ public class PmsBrandParam implements Serializable {
 
     @ApiModelProperty(value = "品牌商家名称",required = true)
     @NotBlank(message = "商家名称不能为空")
+    @Email
     private String name;
 
     @ApiModelProperty(value = "品牌首字母")

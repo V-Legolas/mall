@@ -2,6 +2,8 @@ package com.mardoner.mall.admin.mapper.pms;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.mardoner.mall.admin.entity.pms.Product;
+import com.mardoner.mall.admin.pojo.dto.vo.PmsProductResult;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 
@@ -13,5 +15,6 @@ import com.mardoner.mall.admin.entity.pms.Product;
 * @version 1.0
  */
 public interface ProductMapper extends BaseMapper<Product> {
-	
+
+    PmsProductResult detailInfo(@Param("id")Long productId);
 }

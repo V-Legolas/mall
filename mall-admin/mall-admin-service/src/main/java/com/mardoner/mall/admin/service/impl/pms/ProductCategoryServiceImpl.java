@@ -112,7 +112,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     public IPage<ProductCategory> list(Long parentId, int current, int limit) {
         IPage<ProductCategory> page = new Page<>(current, limit);
         QueryWrapper<ProductCategory> wrapper = new QueryWrapper<>();
-        wrapper.eq("parent_id",parentId);
+        if(parentId != null){
+            wrapper.eq("parent_id",parentId);
+        }
         wrapper.orderByDesc("sort");
         return productCategoryMapper.selectPage(page,wrapper);
     }

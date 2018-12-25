@@ -1,9 +1,13 @@
 package com.mardoner.mall.admin.service.oms;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mardoner.mall.admin.entity.oms.OmsOrderReturnApply;
-import com.mardoner.mall.admin.pojo.dto.vo.OmsOrderReturnApplyResult;
 import com.mardoner.mall.admin.pojo.dto.param.OmsOrderReturnStatusParam;
+import com.mardoner.mall.admin.pojo.dto.param.OmsReturnApplyQueryParam;
+import com.mardoner.mall.admin.pojo.dto.vo.OmsOrderReturnApplyResult;
+
+import java.util.List;
 
 /**
 * @Description:  退货申请业务逻辑接口
@@ -28,4 +32,22 @@ public interface OmsOrderReturnApplyService extends IService<OmsOrderReturnApply
      * @return 退货详情
      */
     OmsOrderReturnApplyResult getItem(Long id);
+
+    /**
+     * 批量删除订单申请（逻辑删除） 把状态改为拒绝
+     * @param ids 订单申请集合
+     * @return 操作记录数
+     */
+    int logicDelete(List<Long> ids);
+
+    /**
+     * 分页筛选订单退货信息
+     * @param param 筛选条件
+     * @param current 当前页
+     * @param limit 每页记录数
+     * @return 符合条件记录集合
+     */
+    IPage<OmsOrderReturnApply> list(OmsReturnApplyQueryParam param,
+                                          Integer current,
+                                          Integer limit);
 }

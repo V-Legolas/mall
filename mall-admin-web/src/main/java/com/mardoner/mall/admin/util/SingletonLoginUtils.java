@@ -34,4 +34,9 @@ public class SingletonLoginUtils {
             return (AdminUserDetails) auth.getPrincipal();
         }
     }
+
+    // 获取当前用户名
+    public static String getUsername(){
+        return getUser().getUsername();
+    }
 }

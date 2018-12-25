@@ -21,7 +21,7 @@ public class PmsProductQueryParam implements Serializable {
     private Integer publishStatus;
 
     @ApiModelProperty("审核状态")
-    private Integer virifyStatus;
+    private Integer verifyStatus;
 
     @ApiModelProperty("商品名称模糊查询关键字")
     private String keyword;
@@ -43,12 +43,12 @@ public class PmsProductQueryParam implements Serializable {
         this.publishStatus = publishStatus;
     }
 
-    public Integer getVirifyStatus() {
-        return virifyStatus;
+    public Integer getVerifyStatus() {
+        return verifyStatus;
     }
 
-    public void setVirifyStatus(Integer virifyStatus) {
-        this.virifyStatus = virifyStatus;
+    public void setVerifyStatus(Integer verifyStatus) {
+        this.verifyStatus = verifyStatus;
     }
 
     public String getKeyword() {

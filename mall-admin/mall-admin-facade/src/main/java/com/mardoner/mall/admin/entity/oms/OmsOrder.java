@@ -159,7 +159,6 @@ public class OmsOrder extends Model<OmsOrder> {
 
     /** 删除状态 , 逻辑删除 */
     @TableField("delete_status")
-    @TableLogic
     private Integer deleteStatus;
 
     /** 下单使用积分 */

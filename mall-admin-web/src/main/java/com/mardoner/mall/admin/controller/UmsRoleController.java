@@ -64,7 +64,7 @@ public class UmsRoleController implements IController {
     public AdminResult updatePermissions(@RequestParam("roleId") Long roleId,
                                          @RequestParam("permissionIds") List<Long> permissionIds){
         int count = roleService.updatePermission(roleId,permissionIds);
-        return getAdminResult(count >= 0);
+        return getAdminResult(count);
     }
 
     @ApiOperation("获取所有角色")

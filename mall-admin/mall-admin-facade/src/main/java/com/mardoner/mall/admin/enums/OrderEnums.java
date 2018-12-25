@@ -45,11 +45,17 @@ public enum OrderEnums implements ReturnCode{
 
     /** 是否为默认发货地址 */
     NOT_DEFAULT_SEND_ADDRESS(0,"非默认发货地址"),
-    DEFAUT_SEND_ADDRESS(1,"默认发货地址"),
+    DEFAULT_SEND_ADDRESS(1,"默认发货地址"),
 
     /** 是否启用 */
     USE(1,"启用"),
-    NOT_USE(0,"不启用")
+    NOT_USE(0,"不启用"),
+
+    /** 订单退货状态 */
+    WAIT_HANDLE(0,"待处理"),
+    RETURNNING(1,"退货中"),
+    RETURN_FINISHED(2,"已完成退货"),
+    REFUSE_RETURN(3,"拒绝该退货申请")
     ;
 
     private Integer code;

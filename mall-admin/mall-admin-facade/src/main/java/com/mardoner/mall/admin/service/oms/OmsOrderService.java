@@ -1,5 +1,6 @@
 package com.mardoner.mall.admin.service.oms;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.mardoner.mall.admin.entity.oms.OmsOrder;
 import com.mardoner.mall.admin.pojo.dto.param.OmsMoneyParam;
@@ -27,7 +28,7 @@ public interface OmsOrderService extends IService<OmsOrder> {
      * @param limit 每页显示记录条数
      * @return 符合条件的集合
      */
-    List<OmsOrder> getList(OmsOrderQueryParam queryParam, Integer index, Integer limit);
+    IPage<OmsOrder> getList(OmsOrderQueryParam queryParam, Integer index, Integer limit);
 
     /**
      * 批量发货
@@ -46,6 +47,11 @@ public interface OmsOrderService extends IService<OmsOrder> {
      */
     @Transactional
     int close(List<Long> orderIds, String note, String operatorName);
+
+    /** 批量逻辑删除
+     * @param ids 要删除的主键id集合
+     */
+    int delete(List<Long> ids);
 
     /**
      * 获取指定订单详情

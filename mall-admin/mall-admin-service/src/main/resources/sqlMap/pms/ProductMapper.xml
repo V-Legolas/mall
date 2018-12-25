@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mardoner.mall.admin.mapper.pms.ProductMapper">
+    <resultMap id="BaseMap" type="com.mardoner.mall.admin.entity.pms.Product">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="brand_id" jdbcType="BIGINT" property="brandId" />
+        <result column="product_category_id" jdbcType="BIGINT" property="productCategoryId" />
+        <result column="freight_template_id" jdbcType="BIGINT" property="freightTemplateId" />
+        <result column="product_attribute_category_id" jdbcType="BIGINT" property="productAttributeCategoryId" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="pic" jdbcType="VARCHAR" property="pic" />
+        <result column="product_sn" jdbcType="VARCHAR" property="productSn" />
+        <result column="delete_status" jdbcType="INTEGER" property="deleteStatus" />
+        <result column="publish_status" jdbcType="INTEGER" property="publishStatus" />
+        <result column="new_status" jdbcType="INTEGER" property="newStatus" />
+        <result column="recommend_status" jdbcType="INTEGER" property="recommendStatus" />
+        <result column="verify_status" jdbcType="INTEGER" property="verifyStatus" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="sale" jdbcType="INTEGER" property="sale" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="promotion_price" jdbcType="DECIMAL" property="promotionPrice" />
+        <result column="gift_growth" jdbcType="INTEGER" property="giftGrowth" />
+        <result column="gift_point" jdbcType="INTEGER" property="giftPoint" />
+        <result column="use_point_limit" jdbcType="INTEGER" property="usePointLimit" />
+        <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+        <result column="original_price" jdbcType="DECIMAL" property="originalPrice" />
+        <result column="stock" jdbcType="INTEGER" property="stock" />
+        <result column="low_stock" jdbcType="INTEGER" property="lowStock" />
+        <result column="unit" jdbcType="VARCHAR" property="unit" />
+        <result column="weight" jdbcType="DECIMAL" property="weight" />
+        <result column="preview_status" jdbcType="INTEGER" property="previewStatus" />
+        <result column="service_ids" jdbcType="VARCHAR" property="serviceIds" />
+        <result column="keywords" jdbcType="VARCHAR" property="keywords" />
+        <result column="note" jdbcType="VARCHAR" property="note" />
+        <result column="album_pics" jdbcType="VARCHAR" property="albumPics" />
+        <result column="detail_title" jdbcType="VARCHAR" property="detailTitle" />
+        <result column="promotion_start_time" jdbcType="TIMESTAMP" property="promotionStartTime" />
+        <result column="promotion_end_time" jdbcType="TIMESTAMP" property="promotionEndTime" />
+        <result column="promotion_per_limit" jdbcType="INTEGER" property="promotionPerLimit" />
+        <result column="promotion_type" jdbcType="INTEGER" property="promotionType" />
+        <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+        <result column="product_category_name" jdbcType="VARCHAR" property="productCategoryName" />
+        <result column="description" property="description" />
+        <result column="detail_desc" property="detailDesc" />
+        <result column="detail_html" property="detailHtml" />
+        <result column="detail_mobile_html" property="detailMobileHtml" />
+    </resultMap>
+
+    <resultMap id="detailMap" type="com.mardoner.mall.admin.pojo.dto.vo.PmsProductResult" extends="BaseMap">
+        <result property="categoryParentId" column="categoryParentId"></result>
+        <collection property="productLadderList" resultMap="com.mardoner.mall.admin.mapper.pms.ProductLadderMapper.BaseMap" columnPrefix="ladder_"></collection>
+        <collection property="fullReductionList" resultMap="com.mardoner.mall.admin.mapper.pms.ProductFullReductionMapper.BaseMap" columnPrefix="full_"></collection>
+        <collection property="memberPriceList" resultMap="com.mardoner.mall.admin.mapper.pms.MemberPriceMapper.BaseMap" columnPrefix="member_"></collection>
+        <collection property="skuStockList" resultMap="com.mardoner.mall.admin.mapper.pms.SkuStockMapper.BaseMap" columnPrefix="sku_"></collection>
+        <collection property="attributeValueList" resultMap="com.mardoner.mall.admin.mapper.pms.ProductAttributeValueMapper.BaseMap" columnPrefix="attribute_"></collection>
+        <collection property="subjectProductRelationList" resultMap="com.mardoner.mall.admin.mapper.cms.SubjectProductRelationMapper.BaseMap" columnPrefix="subject_"></collection>
+        <collection property="preferenceAreaProductRelationList" resultMap="com.mardoner.mall.admin.mapper.cms.PreferenceAreaProductRelationMapper.BaseMap" columnPrefix="preArea_"></collection>
+    </resultMap>
+
+    <select id="detailInfo" resultMap="detailMap">
+        SELECT
+          p.*,
+          pc.parent_id categoryParentId,
+          pl.id ladder_id,pl.product_id ladder_product_id,pl.discount ladder_discount,pl.count ladder_count,pl.price ladder_price,
+          pfr.id full_id,pfr.product_id full_product_id,pfr.full_price full_full_price,pfr.reduce_price full_reduce_price,
+          mp.id member_id,mp.product_id member_product_id,mp.member_level_id member_member_level_id,mp.member_level_name member_member_level_name,mp.member_price member_member_price,
+          ss.id sku_id,ss.product_id sku_product_id,ss.sku_code sku_sku_code,ss.price sku_price,ss.stock sku_stock,ss.low_stock sku_low_stock,ss.sp1 sku_sp1,ss.sp2 sku_sp2,ss.sp3 sku_sp3,ss.pic sku_pic,ss.sale sku_sale,ss.promotion_price sku_promotion_price,ss.lock_stock sku_lock_stock,
+          pav.id attribute_id,pav.product_id attribute_product_id,pav.product_attribute_id attribute_product_attribute_id,pav.value attribute_value,
+          spr.id subject_id,spr.product_id subject_product_id,spr.subject_id subject_subject_id,
+          papr.id preArea_id,papr.preference_area_id preArea_preference_area_id,papr.product_id preArea_product_id
+        FROM
+          pms_product p
+          LEFT JOIN pms_product_category pc ON p.product_category_id=pc.id
+          LEFT JOIN pms_product_ladder pl ON p.id=pl.product_id
+          LEFT JOIN pms_product_full_reduction pfr ON p.id=pfr.product_id
+          LEFT JOIN pms_member_price mp ON p.id=mp.product_id
+          LEFT JOIN pms_sku_stock ss ON p.id=ss.product_id
+          LEFT JOIN pms_product_attribute_value pav ON p.id=pav.product_id
+          LEFT JOIN cms_subject_product_relation spr ON p.id=spr.product_id
+          LEFT JOIN cms_preference_area_product_relation papr ON p.id=papr.product_id
+        WHERE p.id=#{id}
+    </select>
+</mapper>

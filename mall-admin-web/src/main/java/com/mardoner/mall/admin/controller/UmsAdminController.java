@@ -1,5 +1,6 @@
 package com.mardoner.mall.admin.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mardoner.mall.admin.common.base.IController;
 import com.mardoner.mall.admin.common.enums.AdminResult;
 import com.mardoner.mall.admin.common.enums.CommonReturnCode;
@@ -21,13 +22,13 @@ import org.springframework.security.authentication.ProviderNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.security.auth.login.AccountException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,7 @@ public class UmsAdminController implements IController {
 
     @ApiOperation(value = "用户注册")
     @PostMapping("/register")
-    public Object register(@RequestBody @Valid UmsAdminRegisterParam param, BindingResult result){
+    public Object register(@RequestBody @Validated UmsAdminRegisterParam param, BindingResult result){
         if(result.hasErrors()){
             // 先进行参数校验失败
             return new AdminResult(result);
@@ -81,7 +82,7 @@ public class UmsAdminController implements IController {
     // TODO 暂未加入验证码
     @ApiOperation("用户登录")
     @PostMapping("/login")
-    public AdminResult login(@RequestBody @Valid UmsAdminLoginParam param, BindingResult result){
+    public AdminResult login(@RequestBody @Validated UmsAdminLoginParam param, BindingResult result){
         if(result.hasErrors()){
             return new AdminResult(result);
         }
@@ -136,10 +137,10 @@ public class UmsAdminController implements IController {
     @ApiOperation("根据用户名或者姓名分页获取用户列表")
     @GetMapping("/list")
     public AdminResult list(@RequestParam(value="name",required = false) String name,
-                            @RequestParam(value = "limit",defaultValue = "5") Integer limit,
-                            @RequestParam(value = "index",defaultValue = "1") Integer index){
-        List<UmsAdmin> adminList = adminService.listByPage(name, index, limit);
-        return new AdminResult(CommonReturnCode.SUCCESS,adminList);
+                            @RequestParam(value = "pageSize",defaultValue = "5") Integer limit,
+                            @RequestParam(value = "pageNum",defaultValue = "1") Integer index){
+        IPage<UmsAdmin> page = adminService.listByPage(name, index, limit);
+        return new AdminResult(page);
     }
 
     @ApiOperation("获取指定用户信息")
@@ -169,7 +170,7 @@ public class UmsAdminController implements IController {
     public AdminResult updateRole(@RequestParam("adminId") Long adminId,
                            @RequestParam("roleIds") List<Long> ids){
         int count = adminService.updateRole(adminId,ids);
-        return getAdminResult(count >= 0);
+        return getAdminResult(count);
     }
 
     @ApiOperation("获取指定用户权限")

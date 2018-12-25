@@ -126,7 +126,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin>
     }
 
     @Override
-    public List<UmsAdmin> listByPage(String name, Integer index, Integer limit) {
+    public IPage<UmsAdmin> listByPage(String name, Integer index, Integer limit) {
         QueryWrapper<UmsAdmin> queryWrapper = new QueryWrapper<>();
         if(!StringUtils.isEmpty(name)){
             queryWrapper.like("username" , name).or().like("nickname",name);
@@ -135,7 +135,7 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin>
         page.setCurrent(index);
         page.setSize(limit);
         this.page(page,queryWrapper);
-        return page.getRecords();
+        return page;
     }
 
     @Override

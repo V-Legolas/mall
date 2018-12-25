@@ -90,7 +90,7 @@ public class Product extends Model<Product> {
 
     /** 副标题 */
     @TableField("sub_title")
-    private String suvTitle;
+    private String subTitle;
 
     private String description;
 
@@ -102,10 +102,11 @@ public class Product extends Model<Product> {
     private Integer stock;
 
     /** 库存预警值 */
-    private Integer low_stock;
+    @TableField("low_stock")
+    private Integer lowStock;
 
     /** 单位 */
-    private String varchar;
+    private String unit;
 
     /** 商品重量 */
     private BigDecimal weight;
@@ -142,7 +143,7 @@ public class Product extends Model<Product> {
     /** 促销情况 */
 
     @TableField("promotion_start_time")
-    private Date prootionStartTime;
+    private Date promotionStartTime;
 
     @TableField("promotionEndTime")
     private Date promotionEndTime;
@@ -320,12 +321,12 @@ public class Product extends Model<Product> {
         this.usePointLimit = usePointLimit;
     }
 
-    public String getSuvTitle() {
-        return suvTitle;
+    public String getSubTitle() {
+        return subTitle;
     }
 
-    public void setSuvTitle(String suvTitle) {
-        this.suvTitle = suvTitle;
+    public void setSubTitle(String subTitle) {
+        this.subTitle = subTitle;
     }
 
     public String getDescription() {
@@ -352,20 +353,20 @@ public class Product extends Model<Product> {
         this.stock = stock;
     }
 
-    public Integer getLow_stock() {
-        return low_stock;
+    public Integer getLowStock() {
+        return lowStock;
     }
 
-    public void setLow_stock(Integer low_stock) {
-        this.low_stock = low_stock;
+    public void setLowStock(Integer low_stock) {
+        this.lowStock = low_stock;
     }
 
-    public String getVarchar() {
-        return varchar;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setVarchar(String varchar) {
-        this.varchar = varchar;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public BigDecimal getWeight() {
@@ -448,12 +449,12 @@ public class Product extends Model<Product> {
         this.detailMobileHtml = detailMobileHtml;
     }
 
-    public Date getProotionStartTime() {
-        return prootionStartTime;
+    public Date getPromotionStartTime() {
+        return promotionStartTime;
     }
 
-    public void setProotionStartTime(Date prootionStartTime) {
-        this.prootionStartTime = prootionStartTime;
+    public void setPromotionStartTime(Date promotionStartTime) {
+        this.promotionStartTime = promotionStartTime;
     }
 
     public Date getPromotionEndTime() {

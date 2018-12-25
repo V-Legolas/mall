@@ -2,18 +2,20 @@ package com.mardoner.mall.admin.service.impl.oms;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mardoner.mall.admin.entity.oms.OmsOrder;
 import com.mardoner.mall.admin.entity.oms.OmsOrderOperateHistory;
 import com.mardoner.mall.admin.enums.OrderEnums;
+import com.mardoner.mall.admin.enums.StatusEnum;
 import com.mardoner.mall.admin.mapper.oms.OmsOrderMapper;
 import com.mardoner.mall.admin.mapper.oms.OmsOrderOperateHistoryMapper;
 import com.mardoner.mall.admin.pojo.dto.param.OmsMoneyParam;
-import com.mardoner.mall.admin.pojo.dto.vo.OmsOrderDetail;
 import com.mardoner.mall.admin.pojo.dto.param.OmsOrderDeliveryParam;
 import com.mardoner.mall.admin.pojo.dto.param.OmsOrderQueryParam;
 import com.mardoner.mall.admin.pojo.dto.param.OmsReceiveInfoParam;
+import com.mardoner.mall.admin.pojo.dto.vo.OmsOrderDetail;
 import com.mardoner.mall.admin.service.oms.OmsOrderService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -41,22 +43,24 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder>
     private OmsOrderOperateHistoryMapper operateHistoryMapper;
 
     @Override
-    public List<OmsOrder> getList(OmsOrderQueryParam queryParam, Integer index, Integer limit) {
-        IPage<OmsOrder> page = new Page<>();
-        page.setCurrent(index);
-        page.setSize(limit);
+    public IPage<OmsOrder> getList(OmsOrderQueryParam queryParam, Integer index, Integer limit) {
+        IPage<OmsOrder> page = new Page<>(index,limit);
         OmsOrder queryOrder = new OmsOrder();
-        queryOrder.setDeleteStatus(0);          // 未被逻辑删除
+        queryOrder.setDeleteStatus(StatusEnum.NOT_LOGIC_DELETE.getCode());          // 未被逻辑删除
         queryOrder.setOrderSn(queryParam.getOrderSn());
         queryOrder.setSourceType(queryParam.getSourceType());
         queryOrder.setStatus(queryOrder.getStatus());
         queryOrder.setOrderType(queryOrder.getOrderType());
         QueryWrapper<OmsOrder> query = new QueryWrapper<>(queryOrder);
         // 查询条件构造
-        query.like(true,"create_time",queryParam.getCreateTime());
-        query.like(true,"receiver_phone",queryParam.getReceiveNameOrPhone())
-                .or().like("receiver_name",queryParam.getReceiveNameOrPhone());
-        return orderMapper.selectPage(page,query).getRecords();
+        if(StringUtils.isNotEmpty(queryParam.getCreateTime())){
+            query.like(true,"create_time",queryParam.getCreateTime());
+        }
+        if(StringUtils.isNotEmpty(queryParam.getReceiveNameOrPhone())){
+            query.like(true,"receiver_phone",queryParam.getReceiveNameOrPhone())
+                    .or().like("receiver_name",queryParam.getReceiveNameOrPhone());
+        }
+        return orderMapper.selectPage(page,query);
     }
 
     @Override
@@ -87,6 +91,8 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder>
         setEntity.setStatus(OrderEnums.CLOSE.getCode());
         // 条件构造 where
         QueryWrapper<OmsOrder> wrapper = new QueryWrapper<>();
+        // 未被逻辑删除
+        wrapper.eq("deleteStatus", StatusEnum.NOT_LOGIC_DELETE.getCode());
         wrapper.in("id",orderIds);
         int count  = orderMapper.update(setEntity,wrapper);
 
@@ -97,11 +103,24 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder>
            history.setOperateMan(operatorName);
            history.setOrderStatus(OrderEnums.CLOSE.getCode());
            history.setCreateTime(new Date());
-           history.setNote("订单关闭：" + note);
+           if(StringUtils.isEmpty(note)){
+               history.setNote("订单关闭！");
+           }else{
+               history.setNote("订单关闭：" + note);
+           }
            return history;
         }).collect(Collectors.toList());
         operateHistoryMapper.insertList(operateHistories);
         return count;
+    }
+
+    @Override
+    public int delete(List<Long> ids) {
+        QueryWrapper<OmsOrder> wrapper = new QueryWrapper<>();
+        wrapper.in("id",ids);
+        OmsOrder setEntity = new OmsOrder();
+        setEntity.setDeleteStatus(StatusEnum.LOGIC_DELETE.getCode());
+        return orderMapper.update(setEntity, wrapper);
     }
 
     @Override

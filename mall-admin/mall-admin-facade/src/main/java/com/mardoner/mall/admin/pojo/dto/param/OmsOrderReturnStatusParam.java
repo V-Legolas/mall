@@ -15,9 +15,6 @@ import java.io.Serializable;
 public class OmsOrderReturnStatusParam implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("服务单号")
-    private Long id;
-
     @ApiModelProperty("退货地址关联id")
     private Long companyAddressId;
 
@@ -38,15 +35,6 @@ public class OmsOrderReturnStatusParam implements Serializable {
 
     @ApiModelProperty("申请状态(1->退货中/2->已完成/3->拒绝退货)")
     private Integer status;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Long getCompanyAddressId() {
         return companyAddressId;
