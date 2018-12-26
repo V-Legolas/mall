@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.mardoner.mall.admin.validator.FlagValidator;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -22,13 +23,14 @@ public class OmsOrderReturnReason extends Model<OmsOrderReturnReason> {
 
     @TableId(type = IdType.AUTO)
     private Long id;
-
     /** 退货类型 名称 */
+
     private String name;
 
     private String sort;
 
     /** 0->不启用 1->启用 */
+    @FlagValidator({"0","1"})
     private String status;
 
     @TableField("create_time")

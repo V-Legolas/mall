@@ -28,7 +28,7 @@ public class Swagger2Configuration{
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.mardoner.mall.admin.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.mardoner.mall.admin"))
                 .paths(PathSelectors.any())
                 .build();
     }

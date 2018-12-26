@@ -7,9 +7,11 @@ import com.mardoner.mall.admin.common.enums.CommonReturnCode;
 import com.mardoner.mall.admin.entity.pms.Brand;
 import com.mardoner.mall.admin.pojo.dto.param.PmsBrandParam;
 import com.mardoner.mall.admin.service.pms.BrandService;
+import com.mardoner.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +44,11 @@ public class PmsBrandController implements IController {
     @ApiOperation("添加品牌")
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('pms:brand:create')")
-    public AdminResult create(@Validated @RequestBody PmsBrandParam param){
+    public AdminResult create(@Validated @RequestBody PmsBrandParam param,
+                              BindingResult result){
+        if(result.hasErrors()){
+            return new AdminResult(result);
+        }
         int count = brandService.createBrand(param);
         return getAdminResult(count);
     }
@@ -50,7 +56,11 @@ public class PmsBrandController implements IController {
     @ApiOperation("更新品牌")
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('pms:brand:update')")
-    public AdminResult update(@PathVariable Long id,@Validated @RequestBody PmsBrandParam param){
+    public AdminResult update(@PathVariable Long id,@Validated @RequestBody PmsBrandParam param,
+                              BindingResult result){
+        if(result.hasErrors()){
+            return new AdminResult(result);
+        }
         int count = brandService.updateBrand(id,param);
         return getAdminResult(count);
     }
@@ -93,7 +103,11 @@ public class PmsBrandController implements IController {
     @PutMapping("/update/show/status")
     @PreAuthorize("hasAuthority('pms:brand:update')")
     public AdminResult updateShowStatus(@RequestParam("ids")List<Long> ids,
-                                        @RequestParam("showStatus")Integer showStatus){
+                                        @RequestParam("showStatus") @FlagValidator({"0","1"})Integer showStatus,
+                                        BindingResult result){
+        if(result.hasErrors()){
+            return new AdminResult(result);
+        }
         int count = brandService.updateShowStatus(ids,showStatus);
         return getAdminResult(count);
     }
@@ -102,7 +116,11 @@ public class PmsBrandController implements IController {
     @PutMapping("/update/factory/status")
     @PreAuthorize("hasAuthority('pms:brand:update')")
     public AdminResult updateFactoryStatus(@RequestParam("ids")List<Long> ids,
-                                           @RequestParam("factoryStatus")Integer factoryStatus){
+                                           @RequestParam("showStatus") @FlagValidator({"0","1"})Integer factoryStatus,
+                                           BindingResult result){
+        if(result.hasErrors()){
+            return new AdminResult(result);
+        }
         int count = brandService.updateFactoryStatus(ids,factoryStatus);
         return getAdminResult(count);
     }

@@ -32,7 +32,7 @@ public class CmsPreferenceAreaController implements IController {
     private CmsPreferenceAreaService preferenceAreaService;
 
     @ApiOperation("获取所有商品优选")
-    @GetMapping("/listAll")
+    @GetMapping("/list/all")
     public AdminResult listAll(){
         List<CmsPreferenceArea> preferenceAreaList =
                 preferenceAreaService.list(new QueryWrapper<>());

@@ -1,4 +1,4 @@
-package com.mardoner.mall.admin.util;
+package com.mardoner.mall.admin.common.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;

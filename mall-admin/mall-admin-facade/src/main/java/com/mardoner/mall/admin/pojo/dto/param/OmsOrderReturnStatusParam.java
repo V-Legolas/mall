@@ -1,5 +1,6 @@
 package com.mardoner.mall.admin.pojo.dto.param;
 
+import com.mardoner.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class OmsOrderReturnStatusParam implements Serializable {
     private String receiveMan;
 
     @ApiModelProperty("申请状态(1->退货中/2->已完成/3->拒绝退货)")
+    @FlagValidator({"0","1","2","3"})
     private Integer status;
 
     public Long getCompanyAddressId() {

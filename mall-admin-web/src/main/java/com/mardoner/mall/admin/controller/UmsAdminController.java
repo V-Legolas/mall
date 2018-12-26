@@ -12,7 +12,7 @@ import com.mardoner.mall.admin.pojo.dto.param.UmsAdminLoginParam;
 import com.mardoner.mall.admin.pojo.dto.param.UmsAdminRegisterParam;
 import com.mardoner.mall.admin.service.ums.UmsAdminService;
 import com.mardoner.mall.admin.service.ums.UmsPermissionService;
-import com.mardoner.mall.admin.util.SingletonLoginUtils;
+import com.mardoner.mall.admin.common.util.SingletonLoginUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;

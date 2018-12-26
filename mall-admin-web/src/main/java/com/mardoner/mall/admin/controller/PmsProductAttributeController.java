@@ -53,7 +53,7 @@ public class PmsProductAttributeController implements IController {
     @ApiOperation("添加商品属性信息")
     @PostMapping("/create")
     public AdminResult create(@RequestBody @Validated PmsProductAttributeParam param,
-                              BindingResult result){
+        BindingResult result){
         if(result.hasErrors()){
             return new AdminResult(result);
         }

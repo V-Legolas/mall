@@ -41,7 +41,7 @@ public interface OmsOrderService extends IService<OmsOrder> {
     /**
      * 批量关闭订单
      * @param orderIds 订单id集合
-     * @param note 备注
+     * @param note 订单操作备注
      * @param operatorName 操作人
      * @return 成功记录数
      */
@@ -82,7 +82,7 @@ public interface OmsOrderService extends IService<OmsOrder> {
      * 修改订单备注
      * @param id 订单id
      * @param note 新的订单备注
-     * @param status 订单状态
+     * @param status 订单操作记录状态
      * @param operatorName 操作人
      * @return 成功记录数
      */

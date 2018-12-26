@@ -11,6 +11,8 @@ import com.mardoner.mall.admin.service.oms.OmsOrderReturnReasonService;
 import com.mardoner.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -34,7 +36,11 @@ public class OmsOrderReturnReasonController implements IController {
 
     @ApiOperation("添加退货原因")
     @PostMapping("/create")
-    public AdminResult create(@RequestBody OmsOrderReturnReason reason){
+    public AdminResult create(@RequestBody @Validated OmsOrderReturnReason reason,
+                              BindingResult result){
+        if(result.hasErrors()){
+            return new AdminResult(result);
+        }
         boolean isOk = returnReasonService.save(reason);
         return getAdminResult(isOk);
     }
@@ -42,7 +48,11 @@ public class OmsOrderReturnReasonController implements IController {
     @ApiOperation("修改单条退货原因")
     @PutMapping("/update/{id}")
     public AdminResult update(@PathVariable Long id,
-                              @RequestBody OmsOrderReturnReason returnReason){
+                              @RequestBody @Validated OmsOrderReturnReason returnReason,
+                              BindingResult result){
+        if(result.hasErrors()){
+            return new AdminResult(result);
+        }
         returnReason.setId(id);
         boolean isOk = returnReasonService.updateById(returnReason);
         return getAdminResult(isOk);
@@ -74,7 +84,11 @@ public class OmsOrderReturnReasonController implements IController {
     @ApiOperation("批量修改退货原因 是否启用")
     @PutMapping("/update/status")
     public AdminResult updateStatus(@RequestParam("ids")List<Long> ids,
-                                    @FlagValidator({"0","1"}) @RequestParam("status") Integer status){
+                                    @FlagValidator({"0","1"}) @RequestParam("status") Integer status,
+                                    BindingResult result){
+        if(result.hasErrors()){
+            return new AdminResult(result);
+        }
         int count = returnReasonService.updateStatus(ids,status);
         return getAdminResult(count);
     }

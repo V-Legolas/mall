@@ -9,7 +9,7 @@ import com.mardoner.mall.admin.pojo.dto.param.PmsProductParam;
 import com.mardoner.mall.admin.pojo.dto.param.PmsProductQueryParam;
 import com.mardoner.mall.admin.pojo.dto.vo.PmsProductResult;
 import com.mardoner.mall.admin.service.pms.ProductService;
-import com.mardoner.mall.admin.util.SingletonLoginUtils;
+import com.mardoner.mall.admin.common.util.SingletonLoginUtils;
 import com.mardoner.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -1,7 +1,9 @@
 package com.mardoner.mall.admin.pojo.dto.param;
 
+import com.mardoner.mall.admin.validator.MobilePhone;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
@@ -20,8 +22,10 @@ public class OmsReceiveInfoParam implements Serializable {
     @ApiModelProperty("接收人")
     private String receiverName;
     @ApiModelProperty("手机号码")
+    @MobilePhone(message = "请输入正确格式手机号码")
     private String receiverPhone;
     @ApiModelProperty("邮政编码")
+    @Pattern(regexp = "^\\{6}$",message = "邮政编码格式不正确")
     private String receiverPostCode;
     @ApiModelProperty("省")
     private String receiverProvince;

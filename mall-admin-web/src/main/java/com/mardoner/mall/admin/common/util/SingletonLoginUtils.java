@@ -1,4 +1,4 @@
-package com.mardoner.mall.admin.util;
+package com.mardoner.mall.admin.common.util;
 
 import com.mardoner.mall.admin.config.AdminUserDetails;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;

@@ -1,5 +1,6 @@
 package com.mardoner.mall.admin.pojo.dto.param;
 
+import com.mardoner.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -25,6 +26,7 @@ public class OmsMoneyParam implements Serializable{
     @ApiModelProperty("折扣费用")
     private BigDecimal discountAmount;
     @ApiModelProperty("订单状态")
+    @FlagValidator(value = {"0","1","2","3","4","5"})
     private Integer status;
 
     public Long getOrderId() {

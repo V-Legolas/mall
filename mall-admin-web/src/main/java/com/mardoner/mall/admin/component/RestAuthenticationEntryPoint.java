@@ -2,7 +2,7 @@ package com.mardoner.mall.admin.component;
 
 import com.mardoner.mall.admin.common.enums.AdminResult;
 import com.mardoner.mall.admin.common.enums.UserReturnCode;
-import com.mardoner.mall.admin.util.JsonUtils;
+import com.mardoner.mall.admin.common.util.JsonUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;

@@ -13,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**
@@ -34,7 +33,7 @@ public class PmsProductAttributeCategoryController implements IController {
 
     @ApiOperation("添加商品属性分类")
     @PostMapping("/create")
-    public AdminResult create(@NotEmpty @RequestParam String name, BindingResult result){
+    public AdminResult create(@RequestParam String name, BindingResult result){
         if(result.hasErrors()){
             return new AdminResult(result);
         }
@@ -45,10 +44,7 @@ public class PmsProductAttributeCategoryController implements IController {
     @ApiOperation("修改商品属性分类")
     @PutMapping("/update/{id}")
     public AdminResult update(@PathVariable Long id,
-                              @RequestBody @NotEmpty String name,BindingResult result){
-        if(result.hasErrors()){
-            return new AdminResult(result);
-        }
+                              @RequestParam String name){
         int count = attrCategoryService.update(id,name);
         return getAdminResult(count);
     }

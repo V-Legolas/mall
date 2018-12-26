@@ -11,6 +11,7 @@ import com.mardoner.mall.admin.pojo.dto.vo.OmsOrderReturnApplyResult;
 import com.mardoner.mall.admin.service.oms.OmsOrderReturnApplyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,9 +34,9 @@ public class OmsOrderReturnApplyController implements IController {
 
     @ApiOperation("分页查询退货申请")
     @GetMapping("/list")
-    public AdminResult list(@RequestParam("keyword")OmsReturnApplyQueryParam param,
-                            @RequestParam("pageNum")Integer current,
-                            @RequestParam("pageSize")Integer limit){
+    public AdminResult list(@RequestParam(value = "keyword",required = false)OmsReturnApplyQueryParam param,
+                            @RequestParam(value = "pageNum",defaultValue = "1")Integer current,
+                            @RequestParam(value = "pageSize",defaultValue = "5")Integer limit){
         IPage<OmsOrderReturnApply> applyPage=
                 returnApplyService.list(param,current,limit);
         return new AdminResult(applyPage);
@@ -43,7 +44,7 @@ public class OmsOrderReturnApplyController implements IController {
 
     @ApiOperation("批量删除退货申请（逻辑删除，该变申请状态为拒绝）")
     @DeleteMapping("/delete")
-    public AdminResult delete(List<Long> ids){
+    public AdminResult delete(@RequestParam("ids")List<Long> ids){
         int count = returnApplyService.logicDelete(ids);
         return getAdminResult(count);
     }
@@ -58,7 +59,11 @@ public class OmsOrderReturnApplyController implements IController {
     @ApiOperation("修改申请情况")
     @PutMapping("/update/status/{id}")
     public AdminResult updateStatus(@PathVariable Long id,
-                                    @RequestBody OmsOrderReturnStatusParam param){
+                                    @RequestBody OmsOrderReturnStatusParam param,
+                                    BindingResult result){
+        if(result.hasErrors()){
+            return new AdminResult(result);
+        }
         int count = returnApplyService.updateStatus(id,param);
         return getAdminResult(count);
     }

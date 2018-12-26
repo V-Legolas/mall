@@ -18,6 +18,7 @@ import com.mardoner.mall.admin.pojo.dto.vo.PmsProductResult;
 import com.mardoner.mall.admin.service.pms.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -29,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class ProductServiceImpl implements ProductService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductServiceImpl.class);

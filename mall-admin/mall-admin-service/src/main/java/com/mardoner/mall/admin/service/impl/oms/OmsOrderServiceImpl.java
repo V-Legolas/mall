@@ -103,11 +103,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder>
            history.setOperateMan(operatorName);
            history.setOrderStatus(OrderEnums.CLOSE.getCode());
            history.setCreateTime(new Date());
-           if(StringUtils.isEmpty(note)){
-               history.setNote("订单关闭！");
-           }else{
-               history.setNote("订单关闭：" + note);
-           }
+           history.setNote("订单关闭：" + note);
            return history;
         }).collect(Collectors.toList());
         operateHistoryMapper.insertList(operateHistories);

@@ -2,7 +2,7 @@ package com.mardoner.mall.admin.component;
 
 import com.mardoner.mall.admin.common.enums.AdminResult;
 import com.mardoner.mall.admin.common.enums.CommonReturnCode;
-import com.mardoner.mall.admin.util.JsonUtils;
+import com.mardoner.mall.admin.common.util.JsonUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
