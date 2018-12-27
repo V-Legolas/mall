@@ -49,8 +49,8 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder>
         queryOrder.setDeleteStatus(StatusEnum.NOT_LOGIC_DELETE.getCode());          // 未被逻辑删除
         queryOrder.setOrderSn(queryParam.getOrderSn());
         queryOrder.setSourceType(queryParam.getSourceType());
-        queryOrder.setStatus(queryOrder.getStatus());
-        queryOrder.setOrderType(queryOrder.getOrderType());
+        queryOrder.setStatus(queryParam.getStatus());
+        queryOrder.setOrderType(queryParam.getType());
         QueryWrapper<OmsOrder> query = new QueryWrapper<>(queryOrder);
         // 查询条件构造
         if(StringUtils.isNotEmpty(queryParam.getCreateTime())){
@@ -92,7 +92,7 @@ public class OmsOrderServiceImpl extends ServiceImpl<OmsOrderMapper, OmsOrder>
         // 条件构造 where
         QueryWrapper<OmsOrder> wrapper = new QueryWrapper<>();
         // 未被逻辑删除
-        wrapper.eq("deleteStatus", StatusEnum.NOT_LOGIC_DELETE.getCode());
+        wrapper.eq("delete_status", StatusEnum.NOT_LOGIC_DELETE.getCode());
         wrapper.in("id",orderIds);
         int count  = orderMapper.update(setEntity,wrapper);
 

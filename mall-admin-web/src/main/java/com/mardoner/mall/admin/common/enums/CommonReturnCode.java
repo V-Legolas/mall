@@ -9,7 +9,6 @@ public enum CommonReturnCode implements ReturnCode {
 
     REQUEST_OK(200,"请求成功"),
     BAD_REQUEST(400,"请求参数出错"),
-    VALIDATE_ERROR(423,"验证出错"),
     FORBIDDEN(403,"禁止操作"),
     NOT_FOUND(404,"页面找不到了！"),
     SERVER_ERROR(500,"服务器错误"),

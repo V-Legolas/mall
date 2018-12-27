@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mardoner.mall.admin.common.base.IController;
 import com.mardoner.mall.admin.common.enums.AdminResult;
 import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.common.util.SingletonLoginUtils;
 import com.mardoner.mall.admin.entity.oms.OmsOrder;
 import com.mardoner.mall.admin.pojo.dto.param.OmsMoneyParam;
 import com.mardoner.mall.admin.pojo.dto.param.OmsOrderDeliveryParam;
@@ -11,8 +12,6 @@ import com.mardoner.mall.admin.pojo.dto.param.OmsOrderQueryParam;
 import com.mardoner.mall.admin.pojo.dto.param.OmsReceiveInfoParam;
 import com.mardoner.mall.admin.pojo.dto.vo.OmsOrderDetail;
 import com.mardoner.mall.admin.service.oms.OmsOrderService;
-import com.mardoner.mall.admin.common.util.SingletonLoginUtils;
-import com.mardoner.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.BindingResult;
@@ -102,11 +101,7 @@ public class OmsOrderController implements IController {
     @PutMapping("/{id}/updateNote")
     public AdminResult updateNote(@PathVariable Long id,
                                   @RequestParam("note")String note,
-                                  @FlagValidator({"0","1","2","3","4","5"}) @RequestParam("status") Integer status,
-                                  BindingResult result){
-        if(result.hasErrors()){
-            return new AdminResult(result);
-        }
+                                  @RequestParam("status")Integer status){
         int count = orderService.updateNote(id,note,status,
                 SingletonLoginUtils.getUsername());
         return getAdminResult(count);

@@ -43,6 +43,6 @@ public class AdminResult extends BaseResult{
 
     /** 验证失败 */
     public AdminResult(BindingResult result){
-        this(CommonReturnCode.VALIDATE_ERROR.getCode(),result.getFieldError().getDefaultMessage());
+        this(CommonReturnCode.BAD_REQUEST.getCode(),result.getFieldError().getDefaultMessage());
     }
 }

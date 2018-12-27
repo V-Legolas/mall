@@ -8,7 +8,6 @@ import com.mardoner.mall.admin.common.enums.AdminResult;
 import com.mardoner.mall.admin.common.enums.CommonReturnCode;
 import com.mardoner.mall.admin.entity.oms.OmsOrderReturnReason;
 import com.mardoner.mall.admin.service.oms.OmsOrderReturnReasonService;
-import com.mardoner.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.BindingResult;
@@ -84,11 +83,7 @@ public class OmsOrderReturnReasonController implements IController {
     @ApiOperation("批量修改退货原因 是否启用")
     @PutMapping("/update/status")
     public AdminResult updateStatus(@RequestParam("ids")List<Long> ids,
-                                    @FlagValidator({"0","1"}) @RequestParam("status") Integer status,
-                                    BindingResult result){
-        if(result.hasErrors()){
-            return new AdminResult(result);
-        }
+                                    @RequestParam("status") Integer status){
         int count = returnReasonService.updateStatus(ids,status);
         return getAdminResult(count);
     }

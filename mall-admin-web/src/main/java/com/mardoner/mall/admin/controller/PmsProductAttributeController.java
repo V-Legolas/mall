@@ -8,7 +8,6 @@ import com.mardoner.mall.admin.entity.pms.ProductAttribute;
 import com.mardoner.mall.admin.pojo.dto.param.PmsProductAttributeParam;
 import com.mardoner.mall.admin.pojo.dto.vo.PmsProductAttrInfo;
 import com.mardoner.mall.admin.service.pms.ProductAttributeService;
-import com.mardoner.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -39,13 +38,9 @@ public class PmsProductAttributeController implements IController {
     @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "0表示属性，1表示参数", required = true, paramType = "query", dataType = "integer")})
     @GetMapping("/list/{cid}")
     public AdminResult listByAttributeCategory(@PathVariable Long cid,
-                                             @FlagValidator({"0","1"}) @RequestParam("type")Integer type,
+                                             @RequestParam("type")Integer type,
                                              @RequestParam(value = "pageNum",defaultValue = "1")Integer current,
-                                             @RequestParam(value = "pageSize",defaultValue = "5")Integer limit,
-                                             BindingResult result){
-        if(result.hasErrors()){
-            return new AdminResult(result);
-        }
+                                             @RequestParam(value = "pageSize",defaultValue = "5")Integer limit){
         IPage<ProductAttribute> attrPage = attributeService.listPage(cid,type,current,limit);
         return new AdminResult(attrPage);
     }

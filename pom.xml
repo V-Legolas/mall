@@ -28,6 +28,7 @@
         <swagger.version>2.6.1</swagger.version>
         <common-text.version></common-text.version>
         <druid.version>1.1.10</druid.version>
+        <freemarker.version>2.3.28</freemarker.version>
     </properties>
 
     <parent>

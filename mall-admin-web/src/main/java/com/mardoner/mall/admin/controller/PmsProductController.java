@@ -4,13 +4,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mardoner.mall.admin.common.base.IController;
 import com.mardoner.mall.admin.common.enums.AdminResult;
 import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.common.util.SingletonLoginUtils;
 import com.mardoner.mall.admin.entity.pms.Product;
 import com.mardoner.mall.admin.pojo.dto.param.PmsProductParam;
 import com.mardoner.mall.admin.pojo.dto.param.PmsProductQueryParam;
 import com.mardoner.mall.admin.pojo.dto.vo.PmsProductResult;
 import com.mardoner.mall.admin.service.pms.ProductService;
-import com.mardoner.mall.admin.common.util.SingletonLoginUtils;
-import com.mardoner.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -91,11 +90,7 @@ public class PmsProductController implements IController {
     @PreAuthorize("hasAuthority('pms:product:update')")
     @PutMapping("/update/publish")
     public AdminResult updatePublishStatus(@RequestParam("ids")List<Long> ids,
-                                           @FlagValidator({"0","1"}) @RequestParam("publishStatus") Integer status,
-                                           BindingResult result){
-        if(result.hasErrors()){
-            return new AdminResult(result);
-        }
+                                           @RequestParam("publishStatus") Integer status){
         int count = productService.updatePublishStatus(ids,status);
         return getAdminResult(count);
     }
@@ -105,12 +100,8 @@ public class PmsProductController implements IController {
     @PreAuthorize("hasAuthority('pms:product:update')")
     @PutMapping("/update/verify")
     public AdminResult updatePublishStatus(@RequestParam("ids")List<Long> ids,
-                                           @FlagValidator({"0","1"}) @RequestParam("verifyStatus") Integer status,
-                                           @RequestParam("detail")String detail,
-                                           BindingResult result){
-        if(result.hasErrors()){
-            return new AdminResult(result);
-        }
+                                           @RequestParam("verifyStatus") Integer status,
+                                           @RequestParam("detail")String detail){
         int count = productService.updateVerifyStatus(ids,status,detail,
                 SingletonLoginUtils.getUsername());
         return getAdminResult(count);
@@ -120,11 +111,7 @@ public class PmsProductController implements IController {
     @PreAuthorize("hasAuthority('pms:product:update')")
     @PutMapping("/update/new")
     public AdminResult updateNewStatus(@RequestParam("ids")List<Long> ids,
-                                           @FlagValidator({"0","1"}) @RequestParam("newStatus") Integer status,
-                                           BindingResult result){
-        if(result.hasErrors()){
-            return new AdminResult(result);
-        }
+                                           @RequestParam("newStatus") Integer status){
         int count = productService.updateNewStatus(ids,status);
         return getAdminResult(count);
     }
@@ -133,11 +120,7 @@ public class PmsProductController implements IController {
     @PreAuthorize("hasAuthority('pms:product:update')")
     @PutMapping("/update/recommend")
     public AdminResult updateRecommendStatus(@RequestParam("ids")List<Long> ids,
-                                             @FlagValidator({"0","1"}) @RequestParam("recommendStatus") Integer status,
-                                             BindingResult result){
-        if(result.hasErrors()){
-            return new AdminResult(result);
-        }
+                                             @RequestParam("recommendStatus") Integer status){
         int count = productService.updateNewStatus(ids,status);
         return getAdminResult(count);
     }
@@ -146,11 +129,7 @@ public class PmsProductController implements IController {
     @PreAuthorize("hasAuthority('pms:product:delete')")
     @DeleteMapping("/delete/batch")
     public AdminResult deleteLogicBatch(@RequestParam("ids")List<Long> ids,
-                                   @FlagValidator({"0","1"}) @RequestParam("recommendStatus") Integer status,
-                                   BindingResult result){
-        if(result.hasErrors()){
-            return new AdminResult(result);
-        }
+                                    @RequestParam("deleteStatus") Integer status){
         int count = productService.updateNewStatus(ids,status);
         return getAdminResult(count);
     }

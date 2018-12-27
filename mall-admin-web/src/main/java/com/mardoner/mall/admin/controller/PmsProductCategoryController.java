@@ -8,7 +8,6 @@ import com.mardoner.mall.admin.entity.pms.ProductCategory;
 import com.mardoner.mall.admin.pojo.dto.param.PmsProductCategoryParam;
 import com.mardoner.mall.admin.pojo.dto.vo.PmsProductCategoryWithChildren;
 import com.mardoner.mall.admin.service.pms.ProductCategoryService;
-import com.mardoner.mall.admin.validator.FlagValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -90,11 +89,7 @@ public class PmsProductCategoryController implements IController {
     @PutMapping("/update/nav/status")
     @PreAuthorize("hasAuthority('pms:productCategory:update')")
     public AdminResult updateNavStatus(@RequestParam List<Long> ids,
-                                       @FlagValidator({"0","1"}) @RequestParam(value = "navStatus") Integer navStatus,
-                                       BindingResult result) {
-        if(result.hasErrors()){
-            return new AdminResult(result);
-        }
+                                       @RequestParam(value = "navStatus") Integer navStatus) {
         int count = categoryService.updateNavStatus(ids,navStatus);
         return getAdminResult(count);
     }
@@ -103,11 +98,7 @@ public class PmsProductCategoryController implements IController {
     @PutMapping("/update/show/status")
     @PreAuthorize("hasAuthority('pms:productCategory:update')")
     public AdminResult updateShowStatus(@RequestParam List<Long> ids,
-                                        @FlagValidator({"0","1"}) @RequestParam("showStatus") Integer showStatus,
-                                        BindingResult result){
-        if(result.hasErrors()){
-            return new AdminResult(result);
-        }
+                                        @RequestParam("showStatus") Integer showStatus){
         int count = categoryService.updateShowStatus(ids,showStatus);
         return getAdminResult(count);
     }

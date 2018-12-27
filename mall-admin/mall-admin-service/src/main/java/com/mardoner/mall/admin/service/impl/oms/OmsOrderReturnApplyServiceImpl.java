@@ -3,6 +3,7 @@ package com.mardoner.mall.admin.service.impl.oms;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.mardoner.mall.admin.entity.oms.OmsCompanyAddress;
@@ -108,13 +109,19 @@ public class OmsOrderReturnApplyServiceImpl extends ServiceImpl<OmsOrderReturnAp
         // 模糊查询条件构建以及查询实体注入到条件构造器
         QueryWrapper<OmsOrderReturnApply> wrapper =
                 new QueryWrapper<>(queryEntity);
-        wrapper.like("create_time",param.getCreateTime());
-        wrapper.like("handle_time",param.getHandleTime());
-        wrapper.like("return_name",param.getNameOrPhone()).or()
-                .like("return_phone",param.getNameOrPhone());
+        if(!StringUtils.isEmpty(param.getCreateTime())){
+            wrapper.like("create_time",param.getCreateTime());
+        }
+        if(!StringUtils.isEmpty(param.getHandleTime())){
+            wrapper.like("handle_time",param.getHandleTime());
+        }
+        if(!StringUtils.isEmpty(param.getNameOrPhone())){
+            wrapper.like("return_name",param.getNameOrPhone()).or()
+                    .like("return_phone",param.getNameOrPhone());
+        }
 
         // 分页实体
-        IPage<OmsOrderReturnApply> page = new Page<>();
+        IPage<OmsOrderReturnApply> page = new Page<>(current,limit);
         return orderReturnApplyMapper.selectPage(page, wrapper);
     }
 }

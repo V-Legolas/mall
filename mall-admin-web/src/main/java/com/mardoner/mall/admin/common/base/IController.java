@@ -4,6 +4,7 @@ import com.mardoner.mall.admin.common.enums.AdminResult;
 import com.mardoner.mall.admin.common.enums.CommonReturnCode;
 import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import java.beans.PropertyEditorSupport;
 
@@ -21,6 +22,7 @@ public interface IController {
      * 初始化数据绑定，将前端传递的数据进行HTML转义，防止XSS攻击
      * @param binder 传递的绑定数据
      */
+    @InitBinder
     default void initBinder(WebDataBinder binder){
         binder.registerCustomEditor(String.class, new PropertyEditorSupport(){
             @Override

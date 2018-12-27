@@ -31,7 +31,7 @@ public class PmsSkuStockController implements IController {
     @GetMapping("/list")
     public AdminResult list(String keyword){
         List<SkuStock> stockList = stockService.list(keyword);
-        return new AdminResult(CommonReturnCode.SUCCESS, keyword);
+        return new AdminResult(CommonReturnCode.SUCCESS, stockList);
     }
 
     @ApiOperation("批量更新某商品库存信息")

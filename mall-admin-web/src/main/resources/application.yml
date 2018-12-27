@@ -28,4 +28,5 @@ mybatis-plus:
         - classpath:/sqlMap/ums/*.xml
         - classpath:/sqlMap/pms/*.xml
         - classpath:/sqlMap/cms/*.xml
+        - classpath:/sqlMap/sms/*.xml
 

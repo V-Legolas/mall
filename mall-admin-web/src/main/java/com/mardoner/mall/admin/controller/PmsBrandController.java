@@ -103,11 +103,7 @@ public class PmsBrandController implements IController {
     @PutMapping("/update/show/status")
     @PreAuthorize("hasAuthority('pms:brand:update')")
     public AdminResult updateShowStatus(@RequestParam("ids")List<Long> ids,
-                                        @RequestParam("showStatus") @FlagValidator({"0","1"})Integer showStatus,
-                                        BindingResult result){
-        if(result.hasErrors()){
-            return new AdminResult(result);
-        }
+                                        @RequestParam("showStatus")Integer showStatus){
         int count = brandService.updateShowStatus(ids,showStatus);
         return getAdminResult(count);
     }
@@ -116,11 +112,7 @@ public class PmsBrandController implements IController {
     @PutMapping("/update/factory/status")
     @PreAuthorize("hasAuthority('pms:brand:update')")
     public AdminResult updateFactoryStatus(@RequestParam("ids")List<Long> ids,
-                                           @RequestParam("showStatus") @FlagValidator({"0","1"})Integer factoryStatus,
-                                           BindingResult result){
-        if(result.hasErrors()){
-            return new AdminResult(result);
-        }
+                                           @RequestParam("showStatus") @Validated @FlagValidator({"0","1"})Integer factoryStatus){
         int count = brandService.updateFactoryStatus(ids,factoryStatus);
         return getAdminResult(count);
     }

@@ -12,6 +12,7 @@ import com.mardoner.mall.admin.service.oms.OmsOrderReturnApplyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -34,7 +35,7 @@ public class OmsOrderReturnApplyController implements IController {
 
     @ApiOperation("分页查询退货申请")
     @GetMapping("/list")
-    public AdminResult list(@RequestParam(value = "keyword",required = false)OmsReturnApplyQueryParam param,
+    public AdminResult list(OmsReturnApplyQueryParam param,
                             @RequestParam(value = "pageNum",defaultValue = "1")Integer current,
                             @RequestParam(value = "pageSize",defaultValue = "5")Integer limit){
         IPage<OmsOrderReturnApply> applyPage=
@@ -59,7 +60,7 @@ public class OmsOrderReturnApplyController implements IController {
     @ApiOperation("修改申请情况")
     @PutMapping("/update/status/{id}")
     public AdminResult updateStatus(@PathVariable Long id,
-                                    @RequestBody OmsOrderReturnStatusParam param,
+                                    @RequestBody @Validated OmsOrderReturnStatusParam param,
                                     BindingResult result){
         if(result.hasErrors()){
             return new AdminResult(result);
