@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mardoner.mall.admin.mapper.sms.HomeBrandMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mardoner.mall.admin.entity.sms.HomeBrand">
+        <id column="id" property="id" />
+        <result column="brand_id" property="brandId" />
+        <result column="brand_name" property="brandName" />
+        <result column="recommend_status" property="recommendStatus" />
+        <result column="sort" property="sort" />
+    </resultMap>
+    
+    <!-- 批量插入 -->
+    <insert id="insertList">
+    	INSERT INTO sms_home_brand
+    		(name,type,pic,start_time,end_time,status,click_count,order_count,url,
+    		note,sort)
+    	VALUES
+    	<foreach collection="list" item="item" separator="," >
+    		(#{item.name},#{item.type},#{item.pic},#{item.startTime},#{item.endTime},
+    		#{item.status},#{item.clickCount},#{item.orderCount},#{item.url},#{item.note},#{item.sort})
+    	</foreach>
+    </insert>
+</mapper>
