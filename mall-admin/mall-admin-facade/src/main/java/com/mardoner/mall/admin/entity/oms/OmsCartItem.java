@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -19,7 +18,8 @@ import java.util.Date;
 * @Version 1.0
 */
 @TableName("oms_cart_item")
-public class OmsCartItem extends Model<OmsCartItem> {
+public class OmsCartItem implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     @TableId(value="id", type = IdType.AUTO)
     private Long id;
@@ -245,10 +245,5 @@ public class OmsCartItem extends Model<OmsCartItem> {
 
     public void setProductAttr(String productAttr) {
         this.productAttr = productAttr;
-    }
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
     }
 }

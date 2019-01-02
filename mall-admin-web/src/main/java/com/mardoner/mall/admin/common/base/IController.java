@@ -1,7 +1,7 @@
 package com.mardoner.mall.admin.common.base;
 
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -43,19 +43,19 @@ public interface IController {
      * @param isOk 操作成功
      * @return json通用返回结果
      */
-    default AdminResult getAdminResult(boolean isOk) {
+    default CommonResult getResult(boolean isOk) {
         if (isOk) {
-            return new AdminResult(CommonReturnCode.SUCCESS);
+            return new CommonResult(CommonReturnCode.SUCCESS);
         }
-        return new AdminResult(CommonReturnCode.FAILED);
+        return new CommonResult(CommonReturnCode.FAILED);
     }
 
-    default AdminResult getAdminResult(Integer count) {
+    default CommonResult getResult(Integer count) {
         if (count > 0) {
             // 操作成功
-            return new AdminResult(CommonReturnCode.SUCCESS,count);
+            return new CommonResult(CommonReturnCode.SUCCESS,count);
         }
         // 操作失败
-        return new AdminResult(CommonReturnCode.FAILED);
+        return new CommonResult(CommonReturnCode.FAILED);
     }
 }

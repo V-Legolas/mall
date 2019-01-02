@@ -17,6 +17,8 @@ spring:
         testOnBorrow: false
         testOnReturn: false
         filters: stat
+    profiles:
+        active: dev
 logging:
     level:
         com.mardoner.mall.admin.mapper: DEBUG
@@ -24,9 +26,5 @@ server:
     port: 8081
 mybatis-plus:
     mapper-locations:
-        - classpath:/sqlMap/oms/*.xml
-        - classpath:/sqlMap/ums/*.xml
-        - classpath:/sqlMap/pms/*.xml
-        - classpath:/sqlMap/cms/*.xml
-        - classpath:/sqlMap/sms/*.xml
+        - classpath:/sqlMap/**/*.xml
 

@@ -2,8 +2,8 @@ package com.mardoner.mall.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.common.util.SingletonLoginUtils;
 import com.mardoner.mall.admin.entity.oms.OmsOrder;
 import com.mardoner.mall.admin.pojo.dto.param.OmsMoneyParam;
@@ -39,72 +39,72 @@ public class OmsOrderController implements IController {
 
     @ApiOperation(value = "分页、条件查找订单",notes = "第一个参数封装查询条件")
     @GetMapping("/list")
-    public AdminResult list(OmsOrderQueryParam queryParam,
-                     @RequestParam(value = "pageSize", defaultValue = "5")Integer limit,
-                     @RequestParam(value = "pageNum", defaultValue = "1")Integer current){
+    public CommonResult list(OmsOrderQueryParam queryParam,
+                             @RequestParam(value = "pageSize", defaultValue = "5")Integer limit,
+                             @RequestParam(value = "pageNum", defaultValue = "1")Integer current){
         IPage<OmsOrder> orderPage = orderService.getList(queryParam,current,limit);
-        return new AdminResult(orderPage);
+        return new CommonResult(orderPage);
     }
 
     @ApiOperation("批量发货")
     @PutMapping("/update/delivery")
-    public AdminResult delivery(@RequestBody List<OmsOrderDeliveryParam> params){
+    public CommonResult delivery(@RequestBody List<OmsOrderDeliveryParam> params){
         int count = orderService.delivery(params, SingletonLoginUtils.getUsername());
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("批量关闭订单")
     @PutMapping("/update/close")
-    public AdminResult close(@RequestParam("ids") List<Long> ids,
-                             @RequestParam(value = "note", defaultValue = "") String note){
+    public CommonResult close(@RequestParam("ids") List<Long> ids,
+                              @RequestParam(value = "note", defaultValue = "") String note){
         int count = orderService.close(ids,note,SingletonLoginUtils.getUsername());
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("批量删除订单(逻辑删除)")
     @DeleteMapping("/delete")
-    public AdminResult loginDelete(@RequestParam("ids") List<Long> ids){
+    public CommonResult loginDelete(@RequestParam("ids") List<Long> ids){
         int count = orderService.delete(ids);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("获取订单详情：订单信息，商品信息，操作记录")
     @GetMapping("/{id}")
-    public AdminResult detailById(@PathVariable Long id){
+    public CommonResult detailById(@PathVariable Long id){
         OmsOrderDetail detail = orderService.detail(id);
-        return new AdminResult(CommonReturnCode.SUCCESS, detail);
+        return new CommonResult(CommonReturnCode.SUCCESS, detail);
     }
 
     @ApiOperation("修改收货人信息")
     @PutMapping("/update/receiverInfo")
-    public AdminResult updateReceiverInfo(@RequestBody @Validated OmsReceiveInfoParam param,
-                                          BindingResult result){
+    public CommonResult updateReceiverInfo(@RequestBody @Validated OmsReceiveInfoParam param,
+                                           BindingResult result){
         if(result.hasErrors()){
-            return new AdminResult(result);
+            return new CommonResult(result);
         }
         int count = orderService.updateReceiveInfo(param,SingletonLoginUtils.getUsername());
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("修改订单费用信息")
     @PutMapping("/update/moneyInfo")
-    public AdminResult updateMoneyInfo(@RequestBody @Validated OmsMoneyParam param,
-                                       BindingResult result){
+    public CommonResult updateMoneyInfo(@RequestBody @Validated OmsMoneyParam param,
+                                        BindingResult result){
         if(result.hasErrors()){
-            return new AdminResult(result);
+            return new CommonResult(result);
         }
         int count = orderService.updateMoneyInfo(param,SingletonLoginUtils.getUsername());
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("备注订单")
     @PutMapping("/{id}/updateNote")
-    public AdminResult updateNote(@PathVariable Long id,
-                                  @RequestParam("note")String note,
-                                  @RequestParam("status")Integer status){
+    public CommonResult updateNote(@PathVariable Long id,
+                                   @RequestParam("note")String note,
+                                   @RequestParam("status")Integer status){
         int count = orderService.updateNote(id,note,status,
                 SingletonLoginUtils.getUsername());
-        return getAdminResult(count);
+        return getResult(count);
     }
 
 }

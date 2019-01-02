@@ -1,8 +1,8 @@
 package com.mardoner.mall.admin.controller;
 
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.entity.pms.SkuStock;
 import com.mardoner.mall.admin.service.pms.SkuStockService;
 import io.swagger.annotations.Api;
@@ -29,16 +29,16 @@ public class PmsSkuStockController implements IController {
 
     @ApiOperation("根据商品编号及编号模糊搜索sku库存")
     @GetMapping("/list")
-    public AdminResult list(String keyword){
+    public CommonResult list(String keyword){
         List<SkuStock> stockList = stockService.list(keyword);
-        return new AdminResult(CommonReturnCode.SUCCESS, stockList);
+        return new CommonResult(CommonReturnCode.SUCCESS, stockList);
     }
 
     @ApiOperation("批量更新某商品库存信息")
     @PutMapping("/update/batch/{pid}")
-    public AdminResult updateBatch(@PathVariable Long pid,
-                                   @RequestBody List<SkuStock> stockList){
+    public CommonResult updateBatch(@PathVariable Long pid,
+                                    @RequestBody List<SkuStock> stockList){
         int count = stockService.update(pid,stockList);
-        return getAdminResult(count);
+        return getResult(count);
     }
 }

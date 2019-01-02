@@ -2,8 +2,8 @@ package com.mardoner.mall.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.entity.pms.ProductCategory;
 import com.mardoner.mall.admin.pojo.dto.param.PmsProductCategoryParam;
 import com.mardoner.mall.admin.pojo.dto.vo.PmsProductCategoryWithChildren;
@@ -37,78 +37,78 @@ public class PmsProductCategoryController implements IController {
     @ApiOperation("添加产品分类")
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('pms:productCategory:create')")
-    public AdminResult create(@RequestBody @Validated PmsProductCategoryParam param,
-                              BindingResult result){
+    public CommonResult create(@RequestBody @Validated PmsProductCategoryParam param,
+                               BindingResult result){
         if(result.hasErrors()){
-            return new AdminResult(result);
+            return new CommonResult(result);
         }
         int count = categoryService.create(param);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("修改商品分类")
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('pms:productCategory:update')")
-    public AdminResult update(@PathVariable Long id,
-                              @RequestBody @Validated PmsProductCategoryParam param,
-                              BindingResult result){
+    public CommonResult update(@PathVariable Long id,
+                               @RequestBody @Validated PmsProductCategoryParam param,
+                               BindingResult result){
         if (result.hasErrors()){
-            return new AdminResult(result);
+            return new CommonResult(result);
         }
         int count =categoryService.update(id,param);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("删除商品分类")
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('pms:productCategory:delete')")
-    public AdminResult delete(@PathVariable Long id){
+    public CommonResult delete(@PathVariable Long id){
         int count = categoryService.delete(id);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("根据id获取商品分类")
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('pms:productCategory:read')")
-    public AdminResult getItem(@PathVariable Long id){
+    public CommonResult getItem(@PathVariable Long id){
         ProductCategory category = categoryService.getById(id);
-        return new AdminResult(CommonReturnCode.SUCCESS, category);
+        return new CommonResult(CommonReturnCode.SUCCESS, category);
     }
 
     @ApiOperation("父类id分页查询商品分类")
     @GetMapping("/list/{parentId}")
     @PreAuthorize("hasAuthority('pms:productCategory:read')")
-    public AdminResult listByParentCategoryId(@PathVariable("parentId") Long parentId,
-                                              @RequestParam(value = "pageNum",defaultValue = "1")Integer current,
-                                              @RequestParam(value = "pageSize",defaultValue = "5")Integer limit){
+    public CommonResult listByParentCategoryId(@PathVariable("parentId") Long parentId,
+                                               @RequestParam(value = "pageNum",defaultValue = "1")Integer current,
+                                               @RequestParam(value = "pageSize",defaultValue = "5")Integer limit){
         IPage<ProductCategory> categoryPage = categoryService.list(parentId,current,limit);
-        return new AdminResult(categoryPage);
+        return new CommonResult(categoryPage);
     }
 
     @ApiOperation("修改导航栏显示状态")
     @PutMapping("/update/nav/status")
     @PreAuthorize("hasAuthority('pms:productCategory:update')")
-    public AdminResult updateNavStatus(@RequestParam List<Long> ids,
-                                       @RequestParam(value = "navStatus") Integer navStatus) {
+    public CommonResult updateNavStatus(@RequestParam List<Long> ids,
+                                        @RequestParam(value = "navStatus") Integer navStatus) {
         int count = categoryService.updateNavStatus(ids,navStatus);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("修改显示状态")
     @PutMapping("/update/show/status")
     @PreAuthorize("hasAuthority('pms:productCategory:update')")
-    public AdminResult updateShowStatus(@RequestParam List<Long> ids,
-                                        @RequestParam("showStatus") Integer showStatus){
+    public CommonResult updateShowStatus(@RequestParam List<Long> ids,
+                                         @RequestParam("showStatus") Integer showStatus){
         int count = categoryService.updateShowStatus(ids,showStatus);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
 
     @ApiOperation("查询所有一级分类及其子类")
     @GetMapping("/listFirstWithChild")
-    public AdminResult listFirstWithChild(){
+    public CommonResult listFirstWithChild(){
         List<PmsProductCategoryWithChildren> categoryWithChildren =
                 categoryService.listWithChildren();
-        return new AdminResult(CommonReturnCode.SUCCESS, categoryWithChildren);
+        return new CommonResult(CommonReturnCode.SUCCESS, categoryWithChildren);
     }
 }

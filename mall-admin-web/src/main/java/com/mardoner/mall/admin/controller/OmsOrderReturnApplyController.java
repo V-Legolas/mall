@@ -2,8 +2,8 @@ package com.mardoner.mall.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.entity.oms.OmsOrderReturnApply;
 import com.mardoner.mall.admin.pojo.dto.param.OmsOrderReturnStatusParam;
 import com.mardoner.mall.admin.pojo.dto.param.OmsReturnApplyQueryParam;
@@ -35,37 +35,37 @@ public class OmsOrderReturnApplyController implements IController {
 
     @ApiOperation("分页查询退货申请")
     @GetMapping("/list")
-    public AdminResult list(OmsReturnApplyQueryParam param,
-                            @RequestParam(value = "pageNum",defaultValue = "1")Integer current,
-                            @RequestParam(value = "pageSize",defaultValue = "5")Integer limit){
+    public CommonResult list(OmsReturnApplyQueryParam param,
+                             @RequestParam(value = "pageNum",defaultValue = "1")Integer current,
+                             @RequestParam(value = "pageSize",defaultValue = "5")Integer limit){
         IPage<OmsOrderReturnApply> applyPage=
                 returnApplyService.list(param,current,limit);
-        return new AdminResult(applyPage);
+        return new CommonResult(applyPage);
     }
 
     @ApiOperation("批量删除退货申请（逻辑删除，该变申请状态为拒绝）")
     @DeleteMapping("/delete")
-    public AdminResult delete(@RequestParam("ids")List<Long> ids){
+    public CommonResult delete(@RequestParam("ids")List<Long> ids){
         int count = returnApplyService.logicDelete(ids);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("获取退货详情")
     @GetMapping("/{id}")
-    public AdminResult detail(@PathVariable Long id){
+    public CommonResult detail(@PathVariable Long id){
         OmsOrderReturnApplyResult result = returnApplyService.getItem(id);
-        return new AdminResult(CommonReturnCode.SUCCESS,result);
+        return new CommonResult(CommonReturnCode.SUCCESS,result);
     }
 
     @ApiOperation("修改申请情况")
     @PutMapping("/update/status/{id}")
-    public AdminResult updateStatus(@PathVariable Long id,
-                                    @RequestBody @Validated OmsOrderReturnStatusParam param,
-                                    BindingResult result){
+    public CommonResult updateStatus(@PathVariable Long id,
+                                     @RequestBody @Validated OmsOrderReturnStatusParam param,
+                                     BindingResult result){
         if(result.hasErrors()){
-            return new AdminResult(result);
+            return new CommonResult(result);
         }
         int count = returnApplyService.updateStatus(id,param);
-        return getAdminResult(count);
+        return getResult(count);
     }
 }

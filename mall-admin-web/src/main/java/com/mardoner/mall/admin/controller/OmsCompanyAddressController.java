@@ -2,8 +2,8 @@ package com.mardoner.mall.admin.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.entity.oms.OmsCompanyAddress;
 import com.mardoner.mall.admin.service.oms.OmsCompanyAddressService;
 import io.swagger.annotations.Api;
@@ -33,9 +33,9 @@ public class OmsCompanyAddressController implements IController {
 
     @ApiOperation("列举所有收货地址")
     @GetMapping("/list/all")
-    public AdminResult listAll(){
+    public CommonResult listAll(){
         List<OmsCompanyAddress> addressList =
                 companyAddressService.list(new QueryWrapper<>());
-        return new AdminResult(CommonReturnCode.SUCCESS, addressList);
+        return new CommonResult(CommonReturnCode.SUCCESS, addressList);
     }
 }

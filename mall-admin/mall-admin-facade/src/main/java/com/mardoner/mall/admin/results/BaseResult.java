@@ -1,4 +1,4 @@
-package com.mardoner.mall.admin.common.enums;
+package com.mardoner.mall.admin.results;
 
 import java.io.Serializable;
 

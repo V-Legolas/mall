@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.entity.cms.CmsSubject;
 import com.mardoner.mall.admin.service.cms.CmsSubjectService;
 import io.swagger.annotations.Api;
@@ -37,23 +37,23 @@ public class CmsSubjectController implements IController {
 
     @ApiOperation("列举所有专题")
     @GetMapping("/list/all")
-    public AdminResult listAll(){
+    public CommonResult listAll(){
         List<CmsSubject> subjectList = subjectService.list(new QueryWrapper<>());
-        return new AdminResult(CommonReturnCode.SUCCESS, subjectList);
+        return new CommonResult(CommonReturnCode.SUCCESS, subjectList);
     }
 
     @ApiOperation("根据关键字（专题主题）以及分页信息列举专题信息")
     @GetMapping("/list")
-    public AdminResult list(@RequestParam(value = "keyword", required = false)String keyword,
-                            @RequestParam(value = "pageNum", defaultValue = "1")Integer current,
-                            @RequestParam(value = "pageSize", defaultValue = "5")Integer size){
+    public CommonResult list(@RequestParam(value = "keyword", required = false)String keyword,
+                             @RequestParam(value = "pageNum", defaultValue = "1")Integer current,
+                             @RequestParam(value = "pageSize", defaultValue = "5")Integer size){
         IPage<CmsSubject> page = new Page<>(current,size);
         QueryWrapper<CmsSubject> wrapper = new QueryWrapper<>();
         if(!StringUtils.isEmpty(keyword)){
             wrapper.like("title",keyword);
         }
         subjectService.page(page,wrapper);
-        return new AdminResult(page);
+        return new CommonResult(page);
 
     }
 }

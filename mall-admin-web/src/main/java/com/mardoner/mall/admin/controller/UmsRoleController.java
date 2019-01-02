@@ -2,8 +2,8 @@ package com.mardoner.mall.admin.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.entity.ums.UmsPermission;
 import com.mardoner.mall.admin.entity.ums.UmsRole;
 import com.mardoner.mall.admin.service.ums.UmsRoleService;
@@ -31,46 +31,46 @@ public class UmsRoleController implements IController {
 
     @ApiOperation("添加角色")
     @PostMapping("/create")
-    public AdminResult create(@RequestBody UmsRole role){
+    public CommonResult create(@RequestBody UmsRole role){
         boolean isOk = roleService.save(role);
-        return getAdminResult(isOk);
+        return getResult(isOk);
     }
 
     @ApiOperation("修改角色")
     @PutMapping("/update/{roleId}")
-    public AdminResult update(@PathVariable("roleId") Long roleId,
-                              @RequestBody UmsRole role){
+    public CommonResult update(@PathVariable("roleId") Long roleId,
+                               @RequestBody UmsRole role){
         role.setId(roleId);
         boolean isOk = roleService.updateById(role);
-        return getAdminResult(isOk);
+        return getResult(isOk);
     }
 
     @ApiOperation("批量删除角色")
     @DeleteMapping("/delete")
-    public AdminResult deleteList(@RequestParam("roleIds")List<Long> roleIds){
+    public CommonResult deleteList(@RequestParam("roleIds")List<Long> roleIds){
         boolean isOk = roleService.removeByIds(roleIds);
-        return getAdminResult(isOk);
+        return getResult(isOk);
     }
 
     @ApiOperation("获取相应角色权限")
     @GetMapping("/permission/{roleId}")
-    public AdminResult getPermissionById(@PathVariable("roleId") Long roleId){
+    public CommonResult getPermissionById(@PathVariable("roleId") Long roleId){
         List<UmsPermission> permissionList = roleService.getPermissionsByRoleId(roleId);
-        return new AdminResult(CommonReturnCode.SUCCESS,permissionList);
+        return new CommonResult(CommonReturnCode.SUCCESS,permissionList);
     }
 
     @ApiOperation("修改角色权限")
     @PutMapping("/permission/update")
-    public AdminResult updatePermissions(@RequestParam("roleId") Long roleId,
-                                         @RequestParam("permissionIds") List<Long> permissionIds){
+    public CommonResult updatePermissions(@RequestParam("roleId") Long roleId,
+                                          @RequestParam("permissionIds") List<Long> permissionIds){
         int count = roleService.updatePermission(roleId,permissionIds);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("获取所有角色")
     @GetMapping("/list")
-    public AdminResult list(){
+    public CommonResult list(){
         List<UmsRole> roleList = roleService.list(new QueryWrapper<>());
-        return new AdminResult(CommonReturnCode.SUCCESS,roleList);
+        return new CommonResult(CommonReturnCode.SUCCESS,roleList);
     }
 }

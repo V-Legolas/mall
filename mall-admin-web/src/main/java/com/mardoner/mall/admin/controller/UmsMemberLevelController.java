@@ -1,8 +1,8 @@
 package com.mardoner.mall.admin.controller;
 
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.entity.ums.UmsMemberLevel;
 import com.mardoner.mall.admin.service.ums.UmsMemberLevelService;
 import io.swagger.annotations.Api;
@@ -33,8 +33,8 @@ public class UmsMemberLevelController implements IController {
 
     @ApiOperation("获取所有会员等级状态（根据defaultStatus,1为普通会员）")
     @GetMapping("/list")
-    public AdminResult list(@RequestParam("defaultStatus") Integer status){
+    public CommonResult list(@RequestParam("defaultStatus") Integer status){
         List<UmsMemberLevel> memberList = memberLevelService.list(status);
-        return new AdminResult(CommonReturnCode.SUCCESS,memberList);
+        return new CommonResult(CommonReturnCode.SUCCESS,memberList);
     }
 }

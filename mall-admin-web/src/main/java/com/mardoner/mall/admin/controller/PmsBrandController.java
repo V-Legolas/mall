@@ -2,8 +2,8 @@ package com.mardoner.mall.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.entity.pms.Brand;
 import com.mardoner.mall.admin.pojo.dto.param.PmsBrandParam;
 import com.mardoner.mall.admin.service.pms.BrandService;
@@ -36,84 +36,84 @@ public class PmsBrandController implements IController {
     @ApiOperation("获取全部品牌列表")
     @GetMapping("/listAll")
     @PreAuthorize("hasAuthority('pms:brand:read')")
-    public AdminResult listAll(){
+    public CommonResult listAll(){
         List<Brand> brandList = brandService.list();
-        return new AdminResult(CommonReturnCode.SUCCESS,brandList);
+        return new CommonResult(CommonReturnCode.SUCCESS,brandList);
     }
 
     @ApiOperation("添加品牌")
     @PostMapping("/create")
     @PreAuthorize("hasAuthority('pms:brand:create')")
-    public AdminResult create(@Validated @RequestBody PmsBrandParam param,
-                              BindingResult result){
+    public CommonResult create(@Validated @RequestBody PmsBrandParam param,
+                               BindingResult result){
         if(result.hasErrors()){
-            return new AdminResult(result);
+            return new CommonResult(result);
         }
         int count = brandService.createBrand(param);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("更新品牌")
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAuthority('pms:brand:update')")
-    public AdminResult update(@PathVariable Long id,@Validated @RequestBody PmsBrandParam param,
-                              BindingResult result){
+    public CommonResult update(@PathVariable Long id, @Validated @RequestBody PmsBrandParam param,
+                               BindingResult result){
         if(result.hasErrors()){
-            return new AdminResult(result);
+            return new CommonResult(result);
         }
         int count = brandService.updateBrand(id,param);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("删除品牌")
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('pms:brand:delete')")
-    public AdminResult delete(@PathVariable Long id){
+    public CommonResult delete(@PathVariable Long id){
         int count = brandService.delete(id);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("根据品牌名称分页获取品牌")
     @GetMapping("/list")
     @PreAuthorize("hasAuthority('pms:brand:read')")
-    public AdminResult list(@RequestParam(value = "keyword",required = false)String keyword,
-                            @RequestParam(value = "pageNum",defaultValue = "1")Integer current,
-                            @RequestParam(value = "pageSize",defaultValue = "5")Integer limit){
+    public CommonResult list(@RequestParam(value = "keyword",required = false)String keyword,
+                             @RequestParam(value = "pageNum",defaultValue = "1")Integer current,
+                             @RequestParam(value = "pageSize",defaultValue = "5")Integer limit){
         IPage<Brand> brandPage = brandService.listPage(keyword,current,limit);
-        return new AdminResult(brandPage);
+        return new CommonResult(brandPage);
     }
 
     @ApiOperation("根据主键id获取单个品牌")
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('pms:brand:read')")
-    public AdminResult getItem(@PathVariable Long id){
+    public CommonResult getItem(@PathVariable Long id){
         Brand brand = brandService.getById(id);
-        return new AdminResult(CommonReturnCode.SUCCESS, brand);
+        return new CommonResult(CommonReturnCode.SUCCESS, brand);
     }
 
     @ApiOperation("批量删除订单")
     @DeleteMapping("/delete/batch")
     @PreAuthorize("hasAuthority('pms:brand:delete')")
-    public AdminResult deleteBatch(@RequestParam("ids")List<Long> ids){
+    public CommonResult deleteBatch(@RequestParam("ids")List<Long> ids){
         int count = brandService.deleteList(ids);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("批量更新显示状态")
     @PutMapping("/update/show/status")
     @PreAuthorize("hasAuthority('pms:brand:update')")
-    public AdminResult updateShowStatus(@RequestParam("ids")List<Long> ids,
-                                        @RequestParam("showStatus")Integer showStatus){
+    public CommonResult updateShowStatus(@RequestParam("ids")List<Long> ids,
+                                         @RequestParam("showStatus")Integer showStatus){
         int count = brandService.updateShowStatus(ids,showStatus);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("批量更新厂家制造商状态")
     @PutMapping("/update/factory/status")
     @PreAuthorize("hasAuthority('pms:brand:update')")
-    public AdminResult updateFactoryStatus(@RequestParam("ids")List<Long> ids,
-                                           @RequestParam("showStatus") @Validated @FlagValidator({"0","1"})Integer factoryStatus){
+    public CommonResult updateFactoryStatus(@RequestParam("ids")List<Long> ids,
+                                            @RequestParam("showStatus") @Validated @FlagValidator({"0","1"})Integer factoryStatus){
         int count = brandService.updateFactoryStatus(ids,factoryStatus);
-        return getAdminResult(count);
+        return getResult(count);
     }
 }

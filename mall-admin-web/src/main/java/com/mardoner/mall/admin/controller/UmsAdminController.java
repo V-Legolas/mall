@@ -2,9 +2,9 @@ package com.mardoner.mall.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
-import com.mardoner.mall.admin.common.enums.UserReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
+import com.mardoner.mall.admin.results.UserReturnCode;
 import com.mardoner.mall.admin.entity.ums.UmsAdmin;
 import com.mardoner.mall.admin.entity.ums.UmsPermission;
 import com.mardoner.mall.admin.entity.ums.UmsRole;
@@ -59,7 +59,7 @@ public class UmsAdminController implements IController {
     public Object register(@RequestBody @Validated UmsAdminRegisterParam param, BindingResult result){
         if(result.hasErrors()){
             // 先进行参数校验失败
-            return new AdminResult(result);
+            return new CommonResult(result);
         }
 
         boolean registerResult = false;
@@ -68,61 +68,61 @@ public class UmsAdminController implements IController {
         }catch(AccountException e){
             // 账户已经存在
             LOGGER.warn(e.getMessage());
-            return new AdminResult(UserReturnCode.ACCOUNT_USED);
+            return new CommonResult(UserReturnCode.ACCOUNT_USED);
         }
 
         if(!registerResult){
             // 注册失败，其它错误
-            return new AdminResult(CommonReturnCode.UNKOWN);
+            return new CommonResult(CommonReturnCode.UNKOWN);
         }
-        return new AdminResult(CommonReturnCode.SUCCESS);
+        return new CommonResult(CommonReturnCode.SUCCESS);
     }
 
 
     // TODO 暂未加入验证码
     @ApiOperation("用户登录")
     @PostMapping("/login")
-    public AdminResult login(@RequestBody @Validated UmsAdminLoginParam param, BindingResult result){
+    public CommonResult login(@RequestBody @Validated UmsAdminLoginParam param, BindingResult result){
         if(result.hasErrors()){
-            return new AdminResult(result);
+            return new CommonResult(result);
         }
         try{
             boolean isSuccess = adminService.login(param.getUsername(),param.getPassword());
 
-            return new AdminResult(CommonReturnCode.SUCCESS);
+            return new CommonResult(CommonReturnCode.SUCCESS);
         }catch(BadCredentialsException passwordError){
             LOGGER.info("AdminLogin.login()",passwordError);
-            return new AdminResult(UserReturnCode.WRONG_PASSWORD);
+            return new CommonResult(UserReturnCode.WRONG_PASSWORD);
         }catch(UsernameNotFoundException notFound){
             LOGGER.info("AdminLogin.login()",notFound);
-            return new AdminResult(UserReturnCode.USER_NOT_EXIST);
+            return new CommonResult(UserReturnCode.USER_NOT_EXIST);
         }catch(RuntimeException e){
             LOGGER.info("AdminLogin.login()",e);
-            return new AdminResult(CommonReturnCode.UNKOWN);
+            return new CommonResult(CommonReturnCode.UNKOWN);
         }
     }
 
     @ApiOperation("用户登出")
     @PostMapping("/logout")
-    public AdminResult logout(HttpServletRequest request){
+    public CommonResult logout(HttpServletRequest request){
         HttpSession session = request.getSession(false);
         SecurityContextHolder.clearContext();       // 清空上下文
         if(session != null){
             session.invalidate();               // 清空session
         }
-        return new AdminResult(CommonReturnCode.SUCCESS.getCode(),"退出登录成功！");
+        return new CommonResult(CommonReturnCode.SUCCESS.getCode(),"退出登录成功！");
     }
 
     @ApiOperation("当前用户信息")
     @GetMapping(value = "/info")
-    public AdminResult getAdminInfo(){
+    public CommonResult getAdminInfo(){
         String username;
         try{
             username = SingletonLoginUtils.getUser().getUsername();
         }catch (ProviderNotFoundException e){
             // 用户未登录
             LOGGER.info("UmsAdminController.getAdminInfo()" + e.getMessage());
-            return new AdminResult(UserReturnCode.UNAUTHORIZED);
+            return new CommonResult(UserReturnCode.UNAUTHORIZED);
         }
         UmsAdmin umsAdmin = adminService.getAdminByUsername(username);
         List<String> roles = adminService.getRoleList(umsAdmin.getId()).stream()
@@ -131,68 +131,68 @@ public class UmsAdminController implements IController {
         data.put("username",username);
         data.put("roles",roles);
         data.put("icon",umsAdmin.getIcon());
-        return new AdminResult(CommonReturnCode.SUCCESS,data);
+        return new CommonResult(CommonReturnCode.SUCCESS,data);
     }
 
     @ApiOperation("根据用户名或者姓名分页获取用户列表")
     @GetMapping("/list")
-    public AdminResult list(@RequestParam(value="name",required = false) String name,
-                            @RequestParam(value = "pageSize",defaultValue = "5") Integer limit,
-                            @RequestParam(value = "pageNum",defaultValue = "1") Integer index){
+    public CommonResult list(@RequestParam(value="name",required = false) String name,
+                             @RequestParam(value = "pageSize",defaultValue = "5") Integer limit,
+                             @RequestParam(value = "pageNum",defaultValue = "1") Integer index){
         IPage<UmsAdmin> page = adminService.listByPage(name, index, limit);
-        return new AdminResult(page);
+        return new CommonResult(page);
     }
 
     @ApiOperation("获取指定用户信息")
     @GetMapping("/{id}")
-    public AdminResult getAdminById(@PathVariable Long id){
+    public CommonResult getAdminById(@PathVariable Long id){
         UmsAdmin admin = adminService.getById(id);
-        return new AdminResult(CommonReturnCode.SUCCESS,admin);
+        return new CommonResult(CommonReturnCode.SUCCESS,admin);
     }
 
     @ApiOperation("更新指定用户")
     @PutMapping("/update/{id}")
-    public AdminResult update(@PathVariable Long id, @RequestBody UmsAdmin umsAdmin){
+    public CommonResult update(@PathVariable Long id, @RequestBody UmsAdmin umsAdmin){
         umsAdmin.setId(id);
         boolean isSuccess = adminService.updateById(umsAdmin);
-        return getAdminResult(isSuccess);
+        return getResult(isSuccess);
     }
 
     @ApiOperation("删除指定用户")
     @DeleteMapping("/delete/{id}")
-    public AdminResult delete(@PathVariable Long id){
+    public CommonResult delete(@PathVariable Long id){
         boolean isOk = adminService.removeById(id);
-        return getAdminResult(isOk);
+        return getResult(isOk);
     }
 
     @ApiOperation("给客户分配角色")
     @PutMapping("/role/update")
-    public AdminResult updateRole(@RequestParam("adminId") Long adminId,
-                           @RequestParam("roleIds") List<Long> ids){
+    public CommonResult updateRole(@RequestParam("adminId") Long adminId,
+                                   @RequestParam("roleIds") List<Long> ids){
         int count = adminService.updateRole(adminId,ids);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("获取指定用户权限")
     @GetMapping("/role/{adminId}")
-    public AdminResult getRolesById(@PathVariable("adminId") Long adminId){
+    public CommonResult getRolesById(@PathVariable("adminId") Long adminId){
         List<UmsRole> roleList = adminService.getRoleList(adminId);
-        return new AdminResult(CommonReturnCode.SUCCESS,roleList);
+        return new CommonResult(CommonReturnCode.SUCCESS,roleList);
     }
 
     @ApiOperation("给用户分配+-权限")
     @PutMapping("/permission/update")
-    public AdminResult updatePermissions(@RequestParam("adminId")Long adminId,
-                                         @RequestParam("permissionIds")List<Long> permissionIds){
+    public CommonResult updatePermissions(@RequestParam("adminId")Long adminId,
+                                          @RequestParam("permissionIds")List<Long> permissionIds){
         int count = adminService.updatePermission(adminId,permissionIds);
-        return getAdminResult(count >= 0);
+        return getResult(count >= 0);
     }
 
     @ApiOperation("获取用户所有权限")
     @GetMapping("/permission/{adminId}")
-    public AdminResult getAllPermissions(@PathVariable("adminId")Long adminId){
+    public CommonResult getAllPermissions(@PathVariable("adminId")Long adminId){
         List<UmsPermission> permissions = adminService.getPermissionList(adminId);
-        return new AdminResult(CommonReturnCode.SUCCESS,permissions);
+        return new CommonResult(CommonReturnCode.SUCCESS,permissions);
     }
 }
 

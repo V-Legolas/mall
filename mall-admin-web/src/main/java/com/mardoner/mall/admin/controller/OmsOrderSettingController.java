@@ -1,8 +1,8 @@
 package com.mardoner.mall.admin.controller;
 
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.entity.oms.OmsOrderSetting;
 import com.mardoner.mall.admin.service.oms.OmsOrderSettingService;
 import io.swagger.annotations.Api;
@@ -28,18 +28,18 @@ public class OmsOrderSettingController implements IController {
 
     @ApiOperation("获取指定订单设置")
     @GetMapping("/{id}")
-    public AdminResult getItem(@PathVariable Long id){
+    public CommonResult getItem(@PathVariable Long id){
         OmsOrderSetting setting = settingService.getById(id);
-        return new AdminResult(CommonReturnCode.SUCCESS, setting);
+        return new CommonResult(CommonReturnCode.SUCCESS, setting);
     }
 
     @ApiOperation("更新指定订单设置")
     @PutMapping("/update/{id}")
-    public AdminResult update(@PathVariable Long id,
-                              @RequestBody OmsOrderSetting setting){
+    public CommonResult update(@PathVariable Long id,
+                               @RequestBody OmsOrderSetting setting){
         setting.setId(id);
         boolean isOk = settingService.updateById(setting);
-        return getAdminResult(isOk);
+        return getResult(isOk);
     }
 
 }

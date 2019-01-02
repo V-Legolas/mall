@@ -1,7 +1,7 @@
 package com.mardoner.mall.admin.component;
 
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.UserReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.UserReturnCode;
 import com.mardoner.mall.admin.common.util.JsonUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -28,7 +28,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         response.getWriter().println(JsonUtils.objToJson(
-                new AdminResult(UserReturnCode.UNAUTHORIZED.getCode(),authException.getMessage())));
+                new CommonResult(UserReturnCode.UNAUTHORIZED.getCode(),authException.getMessage())));
         response.getWriter().flush();
     }
 }

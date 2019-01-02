@@ -1,7 +1,7 @@
 package com.mardoner.mall.admin.component;
 
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.common.util.JsonUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -28,7 +28,7 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         response.getWriter().println(JsonUtils.objToJson(
-                new AdminResult(CommonReturnCode.FORBIDDEN.getCode(),accessDeniedException.getMessage())));
+                new CommonResult(CommonReturnCode.FORBIDDEN.getCode(),accessDeniedException.getMessage())));
         response.getWriter().flush();
     }
 }

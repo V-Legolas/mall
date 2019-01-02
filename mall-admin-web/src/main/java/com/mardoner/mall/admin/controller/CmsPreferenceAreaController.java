@@ -2,8 +2,8 @@ package com.mardoner.mall.admin.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.entity.cms.CmsPreferenceArea;
 import com.mardoner.mall.admin.service.cms.CmsPreferenceAreaService;
 import io.swagger.annotations.Api;
@@ -33,9 +33,9 @@ public class CmsPreferenceAreaController implements IController {
 
     @ApiOperation("获取所有商品优选")
     @GetMapping("/list/all")
-    public AdminResult listAll(){
+    public CommonResult listAll(){
         List<CmsPreferenceArea> preferenceAreaList =
                 preferenceAreaService.list(new QueryWrapper<>());
-        return new AdminResult(CommonReturnCode.SUCCESS, preferenceAreaList);
+        return new CommonResult(CommonReturnCode.SUCCESS, preferenceAreaList);
     }
 }

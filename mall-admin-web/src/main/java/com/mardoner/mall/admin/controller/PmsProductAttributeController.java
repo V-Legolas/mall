@@ -2,8 +2,8 @@ package com.mardoner.mall.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.entity.pms.ProductAttribute;
 import com.mardoner.mall.admin.pojo.dto.param.PmsProductAttributeParam;
 import com.mardoner.mall.admin.pojo.dto.vo.PmsProductAttrInfo;
@@ -37,55 +37,55 @@ public class PmsProductAttributeController implements IController {
     @ApiOperation("根据分类查询属性列表或者参数列表")
     @ApiImplicitParams({@ApiImplicitParam(name = "type", value = "0表示属性，1表示参数", required = true, paramType = "query", dataType = "integer")})
     @GetMapping("/list/{cid}")
-    public AdminResult listByAttributeCategory(@PathVariable Long cid,
-                                             @RequestParam("type")Integer type,
-                                             @RequestParam(value = "pageNum",defaultValue = "1")Integer current,
-                                             @RequestParam(value = "pageSize",defaultValue = "5")Integer limit){
+    public CommonResult listByAttributeCategory(@PathVariable Long cid,
+                                                @RequestParam("type")Integer type,
+                                                @RequestParam(value = "pageNum",defaultValue = "1")Integer current,
+                                                @RequestParam(value = "pageSize",defaultValue = "5")Integer limit){
         IPage<ProductAttribute> attrPage = attributeService.listPage(cid,type,current,limit);
-        return new AdminResult(attrPage);
+        return new CommonResult(attrPage);
     }
 
     @ApiOperation("添加商品属性信息")
     @PostMapping("/create")
-    public AdminResult create(@RequestBody @Validated PmsProductAttributeParam param,
-        BindingResult result){
+    public CommonResult create(@RequestBody @Validated PmsProductAttributeParam param,
+                               BindingResult result){
         if(result.hasErrors()){
-            return new AdminResult(result);
+            return new CommonResult(result);
         }
         int count = attributeService.create(param);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("修改商品属性信息")
     @PutMapping("/update/{id}")
-    public AdminResult update(@PathVariable Long id,
-                              @RequestBody @Validated PmsProductAttributeParam param,
-                              BindingResult result){
+    public CommonResult update(@PathVariable Long id,
+                               @RequestBody @Validated PmsProductAttributeParam param,
+                               BindingResult result){
         if(result.hasErrors()){
-            return new AdminResult(result);
+            return new CommonResult(result);
         }
         int count = attributeService.update(id,param);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("查询单个商品属性")
     @GetMapping("/{id}")
-    public AdminResult getItem(@PathVariable Long id){
+    public CommonResult getItem(@PathVariable Long id){
         ProductAttribute attribute = attributeService.getById(id);
-        return new AdminResult(CommonReturnCode.SUCCESS,attribute);
+        return new CommonResult(CommonReturnCode.SUCCESS,attribute);
     }
 
     @ApiOperation("批量删除商品属性")
     @DeleteMapping("/delete/batch")
-    public AdminResult deleteBatch(@RequestParam("ids") List<Long> ids){
+    public CommonResult deleteBatch(@RequestParam("ids") List<Long> ids){
         int count = attributeService.delete(ids);
-        return getAdminResult(count);
+        return getResult(count);
     }
 
     @ApiOperation("根据商品分类id获取商品属性及其属性分类")
     @GetMapping("/list/by/productCategory/{productCategoryId}")
-    public AdminResult listInfoByProductCategory(@PathVariable("productCategoryId") Long id){
+    public CommonResult listInfoByProductCategory(@PathVariable("productCategoryId") Long id){
         List<PmsProductAttrInfo> info = attributeService.getAttrInfo(id);
-        return new AdminResult(CommonReturnCode.SUCCESS,info);
+        return new CommonResult(CommonReturnCode.SUCCESS,info);
     }
 }

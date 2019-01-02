@@ -2,8 +2,8 @@ package com.mardoner.mall.admin.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.common.enums.AdminResult;
-import com.mardoner.mall.admin.common.enums.CommonReturnCode;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
 import com.mardoner.mall.admin.entity.ums.UmsPermission;
 import com.mardoner.mall.admin.pojo.dto.vo.UmsPermissionNode;
 import com.mardoner.mall.admin.service.ums.UmsPermissionService;
@@ -32,38 +32,38 @@ public class UmsPermissionController implements IController {
 
     @ApiOperation("以层级结构返回所有权限")
     @GetMapping("/treeList")
-    public AdminResult treeList(){
+    public CommonResult treeList(){
         List<UmsPermissionNode> permissionNodes = permissionService.treeList();
-        return new AdminResult(CommonReturnCode.SUCCESS,permissionNodes);
+        return new CommonResult(CommonReturnCode.SUCCESS,permissionNodes);
     }
 
     @ApiOperation("获取所有权限列表")
     @GetMapping("/list")
-    public AdminResult list(){
+    public CommonResult list(){
         List<UmsPermission> list = permissionService.list(new QueryWrapper<>());
-        return new AdminResult(CommonReturnCode.SUCCESS,list);
+        return new CommonResult(CommonReturnCode.SUCCESS,list);
     }
 
     @ApiOperation("根据id批量删除权限记录")
     @DeleteMapping("/delete")
-    public AdminResult deleteList(@RequestParam("permissionIds") List<Long> permissionIds){
+    public CommonResult deleteList(@RequestParam("permissionIds") List<Long> permissionIds){
         boolean isOk = permissionService.removeByIds(permissionIds);
-        return getAdminResult(isOk);
+        return getResult(isOk);
     }
 
     @ApiOperation("修改权限")
     @PutMapping("/update/{permissionId}")
-    public AdminResult update(@PathVariable("permissionId") Long permissionId,
-                              @RequestBody UmsPermission permission){
+    public CommonResult update(@PathVariable("permissionId") Long permissionId,
+                               @RequestBody UmsPermission permission){
         permission.setId(permissionId);
         boolean isOk = permissionService.updateById(permission);
-        return getAdminResult(isOk);
+        return getResult(isOk);
     }
 
     @ApiOperation("添加权限")
     @PostMapping("/create")
-    public AdminResult create(@RequestBody UmsPermission permission){
+    public CommonResult create(@RequestBody UmsPermission permission){
         boolean isOk = permissionService.save(permission);
-        return getAdminResult(isOk);
+        return getResult(isOk);
     }
 }

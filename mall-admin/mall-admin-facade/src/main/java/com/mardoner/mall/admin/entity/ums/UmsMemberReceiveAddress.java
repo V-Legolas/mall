@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 
 import java.io.Serializable;
 
@@ -17,7 +16,8 @@ import java.io.Serializable;
 * @Version 1.0
 */
 @TableName("ums_member_receive_address")
-public class UmsMemberReceiveAddress extends Model<UmsMemberReceiveAddress> {
+public class UmsMemberReceiveAddress implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @TableId(type = IdType.AUTO)
     private Long id;
@@ -125,10 +125,5 @@ public class UmsMemberReceiveAddress extends Model<UmsMemberReceiveAddress> {
 
     public void setDetailAddress(String detailAddress) {
         this.detailAddress = detailAddress;
-    }
-
-    @Override
-    protected Serializable pkVal() {
-        return this.id;
     }
 }
