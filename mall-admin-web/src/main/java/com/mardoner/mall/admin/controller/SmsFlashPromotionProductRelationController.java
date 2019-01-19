@@ -26,7 +26,7 @@ import java.util.List;
 @Api(tags = "SmsFlashPromotionProductRelationController", description="限时购和商品关系管理")
 @RequestMapping("flash/product")
 public class SmsFlashPromotionProductRelationController implements IController {
-    @Resource(name = "FlashPromotionProductRelationService")
+    @Resource(name = "flashPromotionProductRelationServiceImpl")
     private FlashPromotionProductRelationService productRelationService;
 
     @ApiOperation("批量添加商品关联")

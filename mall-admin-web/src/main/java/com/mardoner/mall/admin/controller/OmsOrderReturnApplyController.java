@@ -62,9 +62,7 @@ public class OmsOrderReturnApplyController implements IController {
     public CommonResult updateStatus(@PathVariable Long id,
                                      @RequestBody @Validated OmsOrderReturnStatusParam param,
                                      BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
+
         int count = returnApplyService.updateStatus(id,param);
         return getResult(count);
     }

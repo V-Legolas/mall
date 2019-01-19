@@ -46,9 +46,6 @@ public class PmsBrandController implements IController {
     @PreAuthorize("hasAuthority('pms:brand:create')")
     public CommonResult create(@Validated @RequestBody PmsBrandParam param,
                                BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
         int count = brandService.createBrand(param);
         return getResult(count);
     }
@@ -58,9 +55,6 @@ public class PmsBrandController implements IController {
     @PreAuthorize("hasAuthority('pms:brand:update')")
     public CommonResult update(@PathVariable Long id, @Validated @RequestBody PmsBrandParam param,
                                BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
         int count = brandService.updateBrand(id,param);
         return getResult(count);
     }

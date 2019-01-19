@@ -2,23 +2,22 @@ package com.mardoner.mall.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.mardoner.mall.admin.common.base.IController;
-import com.mardoner.mall.admin.results.CommonResult;
-import com.mardoner.mall.admin.results.CommonReturnCode;
-import com.mardoner.mall.admin.results.UserReturnCode;
+import com.mardoner.mall.admin.common.util.SingletonLoginUtils;
 import com.mardoner.mall.admin.entity.ums.UmsAdmin;
 import com.mardoner.mall.admin.entity.ums.UmsPermission;
 import com.mardoner.mall.admin.entity.ums.UmsRole;
 import com.mardoner.mall.admin.pojo.dto.param.UmsAdminLoginParam;
 import com.mardoner.mall.admin.pojo.dto.param.UmsAdminRegisterParam;
+import com.mardoner.mall.admin.results.CommonResult;
+import com.mardoner.mall.admin.results.CommonReturnCode;
+import com.mardoner.mall.admin.results.UserReturnCode;
 import com.mardoner.mall.admin.service.ums.UmsAdminService;
-import com.mardoner.mall.admin.service.ums.UmsPermissionService;
-import com.mardoner.mall.admin.common.util.SingletonLoginUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.ProviderNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
@@ -28,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.security.auth.login.AccountException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,17 +49,14 @@ public class UmsAdminController implements IController {
 
     @Resource(name = "umsAdminServiceImpl")
     private UmsAdminService adminService;
-    @Resource(name = "umsPermissionServiceImpl")
-    private UmsPermissionService permissionService;
+    @Value("${jwt.tokenHeader}")
+    private String tokenHeader;
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
 
     @ApiOperation(value = "用户注册")
     @PostMapping("/register")
     public Object register(@RequestBody @Validated UmsAdminRegisterParam param, BindingResult result){
-        if(result.hasErrors()){
-            // 先进行参数校验失败
-            return new CommonResult(result);
-        }
-
         boolean registerResult = false;
         try{
             registerResult = adminService.register(param);
@@ -70,26 +65,27 @@ public class UmsAdminController implements IController {
             LOGGER.warn(e.getMessage());
             return new CommonResult(UserReturnCode.ACCOUNT_USED);
         }
-
         if(!registerResult){
             // 注册失败，其它错误
-            return new CommonResult(CommonReturnCode.UNKOWN);
+            return new CommonResult(CommonReturnCode.UNKNOWN);
         }
         return new CommonResult(CommonReturnCode.SUCCESS);
     }
 
 
-    // TODO 暂未加入验证码
+    // 后台登录不加入验证码
     @ApiOperation("用户登录")
     @PostMapping("/login")
     public CommonResult login(@RequestBody @Validated UmsAdminLoginParam param, BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
         try{
-            boolean isSuccess = adminService.login(param.getUsername(),param.getPassword());
-
-            return new CommonResult(CommonReturnCode.SUCCESS);
+            String token = adminService.login(param.getUsername(),param.getPassword());
+            if(token == null){
+                return new CommonResult(UserReturnCode.VALIDATE_ERROR);
+            }
+            Map<String, String> tokenMap = new HashMap<>();
+            tokenMap.put("token", token);
+            tokenMap.put("tokenHead", tokenHead);
+            return new CommonResult(CommonReturnCode.SUCCESS, tokenMap);
         }catch(BadCredentialsException passwordError){
             LOGGER.info("AdminLogin.login()",passwordError);
             return new CommonResult(UserReturnCode.WRONG_PASSWORD);
@@ -98,32 +94,38 @@ public class UmsAdminController implements IController {
             return new CommonResult(UserReturnCode.USER_NOT_EXIST);
         }catch(RuntimeException e){
             LOGGER.info("AdminLogin.login()",e);
-            return new CommonResult(CommonReturnCode.UNKOWN);
+            return new CommonResult(CommonReturnCode.UNKNOWN);
         }
     }
+
+    // 刷新token
+    @ApiOperation("刷新token")
+    @GetMapping("/token/refresh")
+    public CommonResult refreshToken(HttpServletRequest request){
+        String token = request.getHeader(tokenHeader);
+        String refreshToken = adminService.refreshToken(token);
+        if(refreshToken == null){
+            return new CommonResult(CommonReturnCode.FAILED);
+        }
+        Map<String, String> tokenMap = new HashMap<>();
+        tokenMap.put("token", token);
+        tokenMap.put("tokenHead", tokenHead);
+        return new CommonResult(CommonReturnCode.SUCCESS, tokenMap);
+    }
+
 
     @ApiOperation("用户登出")
     @PostMapping("/logout")
     public CommonResult logout(HttpServletRequest request){
-        HttpSession session = request.getSession(false);
         SecurityContextHolder.clearContext();       // 清空上下文
-        if(session != null){
-            session.invalidate();               // 清空session
-        }
+        // 由于基于token，所以其实后端无需做任何操作，只需前端清除保存的token即可
         return new CommonResult(CommonReturnCode.SUCCESS.getCode(),"退出登录成功！");
     }
 
     @ApiOperation("当前用户信息")
     @GetMapping(value = "/info")
     public CommonResult getAdminInfo(){
-        String username;
-        try{
-            username = SingletonLoginUtils.getUser().getUsername();
-        }catch (ProviderNotFoundException e){
-            // 用户未登录
-            LOGGER.info("UmsAdminController.getAdminInfo()" + e.getMessage());
-            return new CommonResult(UserReturnCode.UNAUTHORIZED);
-        }
+        String username = SingletonLoginUtils.getUser().getUsername();
         UmsAdmin umsAdmin = adminService.getAdminByUsername(username);
         List<String> roles = adminService.getRoleList(umsAdmin.getId()).stream()
                 .map(role -> role.getName()).collect(Collectors.toList());

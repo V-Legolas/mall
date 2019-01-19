@@ -34,9 +34,6 @@ public class PmsProductAttributeCategoryController implements IController {
     @ApiOperation("添加商品属性分类")
     @PostMapping("/create")
     public CommonResult create(@RequestParam String name, BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
         int count = attrCategoryService.create(name);
         return getResult(count);
     }

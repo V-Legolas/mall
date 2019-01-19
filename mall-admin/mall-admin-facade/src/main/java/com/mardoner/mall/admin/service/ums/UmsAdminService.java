@@ -42,7 +42,14 @@ public interface UmsAdminService extends IService<UmsAdmin> {
      * @param password 密码
      * @return 是否成功
      */
-    boolean login(String username, String password)throws AuthenticationException;
+    String login(String username, String password)throws AuthenticationException;
+
+    /**
+     * token刷新
+     * @param oldToken
+     * @return
+     */
+    String refreshToken(String oldToken);
 
     /**
      * 分页查询所有管理员

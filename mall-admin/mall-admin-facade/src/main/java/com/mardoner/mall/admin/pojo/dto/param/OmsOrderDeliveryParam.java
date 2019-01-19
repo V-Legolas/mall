@@ -47,4 +47,13 @@ public class OmsOrderDeliveryParam implements Serializable {
     public void setDeliveryCompany(String deliveryCompany) {
         this.deliveryCompany = deliveryCompany;
     }
+
+    @Override
+    public String toString() {
+        return "OmsOrderDeliveryParam{" +
+                "orderId=" + orderId +
+                ", deliverySn='" + deliverySn + '\'' +
+                ", deliveryCompany='" + deliveryCompany + '\'' +
+                '}';
+    }
 }

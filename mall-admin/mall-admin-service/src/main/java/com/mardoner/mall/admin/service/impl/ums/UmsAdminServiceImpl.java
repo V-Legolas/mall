@@ -12,15 +12,19 @@ import com.mardoner.mall.admin.mapper.ums.UmsAdminPermissionRelationMapper;
 import com.mardoner.mall.admin.mapper.ums.UmsAdminRoleRelationMapper;
 import com.mardoner.mall.admin.pojo.dto.param.UmsAdminRegisterParam;
 import com.mardoner.mall.admin.service.ums.UmsAdminService;
+import com.mardoner.mall.admin.util.JwtTokenUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -50,9 +54,15 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin>
     @Resource(name = "umsAdminRoleRelationMapper")
     private UmsAdminRoleRelationMapper adminRoleRelationMapper;
     @Autowired
+    private JwtTokenUtils jwtUtils;
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationProvider authManager;
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
 
     @Override
     public UmsAdmin getAdminByUsername(String username) {
@@ -64,17 +74,30 @@ public class UmsAdminServiceImpl extends ServiceImpl<UmsAdminMapper, UmsAdmin>
     }
 
     @Override
-    public boolean login(String username, String password) throws AuthenticationException {
+    public String login(String username, String password) throws AuthenticationException {
         // 密码需要客户端加密再传递到数据库验证
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(username,password);
         Authentication authentication = authManager.authenticate(authenticationToken);
         // 将验证信息保存至上下文
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        // 获取jwt token
+        UserDetails userDetail = userDetailsService.loadUserByUsername(username);
+        String token = jwtUtils.generateToken(userDetail);
         // 更新登录相关信息
         updateLoginTimeByUserName(username);
         insertLoginLog(username);
-        return true;
+        return token;
+    }
+
+    @Override
+    public String refreshToken(String oldToken) {
+        String token = oldToken.substring(tokenHead.length());      //part of after tokenHead
+        if(!jwtUtils.isExpired(token)){
+            // token为过期
+            return jwtUtils.refreshToken(token);
+        }
+        return null;
     }
 
     /**

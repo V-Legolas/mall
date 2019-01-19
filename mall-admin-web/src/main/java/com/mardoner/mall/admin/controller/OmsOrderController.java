@@ -79,9 +79,6 @@ public class OmsOrderController implements IController {
     @PutMapping("/update/receiverInfo")
     public CommonResult updateReceiverInfo(@RequestBody @Validated OmsReceiveInfoParam param,
                                            BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
         int count = orderService.updateReceiveInfo(param,SingletonLoginUtils.getUsername());
         return getResult(count);
     }
@@ -90,9 +87,6 @@ public class OmsOrderController implements IController {
     @PutMapping("/update/moneyInfo")
     public CommonResult updateMoneyInfo(@RequestBody @Validated OmsMoneyParam param,
                                         BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
         int count = orderService.updateMoneyInfo(param,SingletonLoginUtils.getUsername());
         return getResult(count);
     }

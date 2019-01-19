@@ -40,9 +40,6 @@ public class PmsProductController implements IController {
     @PreAuthorize("hasAuthority('pms:product:create')")
     public CommonResult create(@RequestBody @Validated PmsProductParam param,
                                BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
         int count = productService.create(param);
         return getResult(count);
     }
@@ -53,9 +50,6 @@ public class PmsProductController implements IController {
     public CommonResult update(@PathVariable Long id,
                                @RequestBody @Validated PmsProductParam param,
                                BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
         int count = productService.update(id,param);
         return getResult(count);
     }

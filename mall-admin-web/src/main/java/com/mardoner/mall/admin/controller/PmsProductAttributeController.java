@@ -49,9 +49,6 @@ public class PmsProductAttributeController implements IController {
     @PostMapping("/create")
     public CommonResult create(@RequestBody @Validated PmsProductAttributeParam param,
                                BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
         int count = attributeService.create(param);
         return getResult(count);
     }
@@ -61,9 +58,6 @@ public class PmsProductAttributeController implements IController {
     public CommonResult update(@PathVariable Long id,
                                @RequestBody @Validated PmsProductAttributeParam param,
                                BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
         int count = attributeService.update(id,param);
         return getResult(count);
     }

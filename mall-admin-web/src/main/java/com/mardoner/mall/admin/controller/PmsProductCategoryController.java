@@ -39,9 +39,6 @@ public class PmsProductCategoryController implements IController {
     @PreAuthorize("hasAuthority('pms:productCategory:create')")
     public CommonResult create(@RequestBody @Validated PmsProductCategoryParam param,
                                BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
         int count = categoryService.create(param);
         return getResult(count);
     }
@@ -52,9 +49,6 @@ public class PmsProductCategoryController implements IController {
     public CommonResult update(@PathVariable Long id,
                                @RequestBody @Validated PmsProductCategoryParam param,
                                BindingResult result){
-        if (result.hasErrors()){
-            return new CommonResult(result);
-        }
         int count =categoryService.update(id,param);
         return getResult(count);
     }

@@ -24,7 +24,7 @@ import java.util.List;
 @Api(tags = "SmsHomeRecommendSubjectController", description = "首页专题推荐管理")
 @RequestMapping("/home/recommendSubject")
 public class SmsHomeRecommendSubjectController implements IController {
-    @Resource(name = "homeSubjectServiceImpl")
+    @Resource(name = "homeRecommendSubjectServiceImpl")
     private HomeRecommendSubjectService subjectService;
 
     @ApiOperation("批量添加首页推荐专题")

@@ -1,5 +1,6 @@
 package com.mardoner.mall.admin.config;
 
+import com.mardoner.mall.admin.component.JwtAuthenticationTokenFilter;
 import com.mardoner.mall.admin.entity.ums.UmsAdmin;
 import com.mardoner.mall.admin.entity.ums.UmsPermission;
 import com.mardoner.mall.admin.service.ums.UmsAdminService;
@@ -14,12 +15,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -45,18 +48,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and()
-                .authorizeRequests()
+        http.csrf().disable()           // 基于jwt无需csrf
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)     //基于token,无需session
+                .and().authorizeRequests()
                 .antMatchers(HttpMethod.GET,            // 静态资源无需授权
                         "/","/favicon.ico","/*.html",
                         "/**/.css,/**/.js","/swagger*/**","/v2/api-docs/**","/webjars/**").permitAll()
-
                 .antMatchers("/admin/login","/admin/register").permitAll()      //登录与注册页匿名访问
                 .antMatchers(HttpMethod.OPTIONS).permitAll()                // 跨域嗅探
 //                .antMatchers("/**").permitAll()                 // 测试全部可以访问
                 .anyRequest().authenticated();          // 其他资源全部需要鉴定权限
         // 禁用缓存
         http.headers().cacheControl();
+        // 添加jwt token过滤器
+        http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         // 添加自定义未登录和未授权处理
         http.exceptionHandling()
                 .accessDeniedHandler(deniedHandler)
@@ -88,6 +93,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * JWT token FILTER
+     */
+    @Bean
+    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter(){
+        return new JwtAuthenticationTokenFilter();
     }
 
     /**

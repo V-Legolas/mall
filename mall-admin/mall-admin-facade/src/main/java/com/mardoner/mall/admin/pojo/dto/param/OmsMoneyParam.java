@@ -60,4 +60,14 @@ public class OmsMoneyParam implements Serializable{
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "OmsMoneyParam{" +
+                "orderId=" + orderId +
+                ", freightAmount=" + freightAmount +
+                ", discountAmount=" + discountAmount +
+                ", status=" + status +
+                '}';
+    }
 }

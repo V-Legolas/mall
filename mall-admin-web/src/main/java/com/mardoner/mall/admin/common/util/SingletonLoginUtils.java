@@ -20,7 +20,7 @@ public class SingletonLoginUtils {
         throw new AssertionError();
     }
 
-    // TODO 验证码验证
+    // 后台登录暂未使用验证码
 
 
     // 获取当前登录用户

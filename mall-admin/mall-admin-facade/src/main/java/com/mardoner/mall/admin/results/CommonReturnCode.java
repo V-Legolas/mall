@@ -5,7 +5,7 @@ import com.mardoner.mall.admin.enums.ReturnCode;
 public enum CommonReturnCode implements ReturnCode {
     SUCCESS(200,"操作成功"),
     FAILED(500,"操作失败"),
-    UNKOWN(-1,"未知错误"),
+    UNKNOWN(-1,"未知错误"),
 
     BAD_REQUEST(400,"请求参数出错"),
     FORBIDDEN(403,"禁止操作");

@@ -37,9 +37,6 @@ public class OmsOrderReturnReasonController implements IController {
     @PostMapping("/create")
     public CommonResult create(@RequestBody @Validated OmsOrderReturnReason reason,
                                BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
         boolean isOk = returnReasonService.save(reason);
         return getResult(isOk);
     }
@@ -49,9 +46,6 @@ public class OmsOrderReturnReasonController implements IController {
     public CommonResult update(@PathVariable Long id,
                                @RequestBody @Validated OmsOrderReturnReason returnReason,
                                BindingResult result){
-        if(result.hasErrors()){
-            return new CommonResult(result);
-        }
         returnReason.setId(id);
         boolean isOk = returnReasonService.updateById(returnReason);
         return getResult(isOk);
