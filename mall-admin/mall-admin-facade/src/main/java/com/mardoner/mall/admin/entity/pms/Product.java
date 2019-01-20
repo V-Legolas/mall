@@ -145,7 +145,7 @@ public class Product implements Serializable{
     @TableField("promotion_start_time")
     private Date promotionStartTime;
 
-    @TableField("promotionEndTime")
+    @TableField("promotion_end_time")
     private Date promotionEndTime;
 
     @TableField("promotion_per_limit")

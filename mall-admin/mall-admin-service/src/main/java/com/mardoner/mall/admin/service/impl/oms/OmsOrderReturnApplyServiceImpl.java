@@ -100,15 +100,18 @@ public class OmsOrderReturnApplyServiceImpl extends ServiceImpl<OmsOrderReturnAp
 
     @Override
     public IPage<OmsOrderReturnApply> list(OmsReturnApplyQueryParam param, Integer current, Integer limit) {
-        // 查询实体
-        OmsOrderReturnApply queryEntity = new OmsOrderReturnApply();
-        queryEntity.setId(param.getId());
-        queryEntity.setStatus(param.getStatus());
-        queryEntity.setHandleMan(param.getHandleMan());
-
-        // 模糊查询条件构建以及查询实体注入到条件构造器
+        //构造器
         QueryWrapper<OmsOrderReturnApply> wrapper =
-                new QueryWrapper<>(queryEntity);
+                new QueryWrapper<>();
+        if(param.getId() != null){
+            wrapper.eq("id",param.getId());
+        }
+        if(param.getStatus() != null){
+            wrapper.eq("status",param.getStatus());
+        }
+        if(param.getHandleMan() != null){
+            wrapper.eq("handle_man",param.getHandleMan());
+        }
         if(!StringUtils.isEmpty(param.getCreateTime())){
             wrapper.like("create_time",param.getCreateTime());
         }

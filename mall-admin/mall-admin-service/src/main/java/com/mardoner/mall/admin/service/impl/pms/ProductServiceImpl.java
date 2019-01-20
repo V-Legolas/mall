@@ -171,8 +171,8 @@ public class ProductServiceImpl implements ProductService {
         if(!StringUtils.isEmpty(param.getKeyword())){
             wrapper.like("name",param.getKeyword());
         }
-        wrapper.orderByDesc("sort");
-
+        // 排除and带来的bug
+        wrapper.and(i -> i.eq("1","1")).orderByDesc("sort");
         return productMapper.selectPage(page,wrapper);
     }
 
